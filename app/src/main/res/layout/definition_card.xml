@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <RelativeLayout
+                android:id="@+id/search_term_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/searchTerm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="searchTerm"
+                    android:textSize="24sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/search_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_term_layout">
+
+                <TextView
+                    android:id="@+id/searchGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="searchGender" />
+
+                <TextView
+                    android:id="@+id/searchDeclension"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toEndOf="@id/searchGender"
+                    android:layout_toRightOf="@id/searchGender"
+                    android:text="searchDeclension" />
+
+                <TextView
+                    android:id="@+id/searchType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toEndOf="@id/searchDeclension"
+                    android:layout_toRightOf="@id/searchDeclension"
+                    android:text="searchType" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mutation_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_details">
+
+                <TextView
+                    android:id="@+id/search_au"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AU" />
+
+                <TextView
+                    android:id="@+id/search_gu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toEndOf="@id/search_au"
+                    android:layout_toRightOf="@id/search_au"
+                    android:text="GU" />
+
+                <TextView
+                    android:id="@+id/search_ai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toEndOf="@id/search_gu"
+                    android:layout_toRightOf="@id/search_gu"
+                    android:text="AI" />
+
+                <TextView
+                    android:id="@+id/search_gi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toEndOf="@id/search_ai"
+                    android:layout_toRightOf="@id/search_ai"
+                    android:text="GI" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/synonyms_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mutation_details">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mutation_translation"
+                    android:text="Mutation"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
