@@ -1,10 +1,6 @@
 package com.syzible.tearma;
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,23 +13,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.syzible.tearma.Interfaces.NetworkActivity;
+import com.syzible.tearma.Objects.SearchLang;
 import com.syzible.tearma.Services.Networking;
-import com.syzible.tearma.Services.Parsing;
+import com.syzible.tearma.Services.Parser;
 
 import org.json.JSONArray;
 
 import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NetworkActivity, SearchView.OnQueryTextListener {
+        implements NetworkActivity, SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private SearchView searchView;
-    private MenuItem searchMenuItem;
 
     private TextView hint;
+
+    private SearchLang lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,37 +39,24 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.card_holder);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         hint = (TextView) findViewById(R.id.hint);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        searchMenuItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchMenuItem.getActionView();
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         return true;
     }
@@ -93,36 +76,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     @Override
     public void onSuccess(JSONArray array) {
         System.out.println(array);
         if (array.length() > 0) {
-            adapter = new Adapter(Parsing.parse(array));
+            lang = Parser.parseLang(array);
+            adapter = new Adapter(Parser.parseDefinitions(array));
             recyclerView.setAdapter(adapter);
         } else {
             Toast.makeText(this, "No results found!", Toast.LENGTH_SHORT).show();
@@ -136,7 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(this, "Error with internet connection", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -144,9 +103,8 @@ public class MainActivity extends AppCompatActivity
         hint.setVisibility(View.INVISIBLE);
 
         Hashtable<String, String> parameters = new Hashtable<>();
-        //parameters.put("limit", "1");
         parameters.put("term", query);
-        //parameters.put("lang", "en");
+        parameters.put("lang", "en");
 
         new Networking(this, parameters).execute();
         return false;

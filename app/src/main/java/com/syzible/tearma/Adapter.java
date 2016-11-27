@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.syzible.tearma.Objects.Definition;
+import com.syzible.tearma.Objects.Mutations;
 
 import java.util.ArrayList;
 
@@ -16,10 +17,8 @@ import java.util.ArrayList;
 
 class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private ArrayList<Definition> definitions = new ArrayList<>();
-    private Definition definition;
 
     Adapter() {}
-
     Adapter(ArrayList<Definition> definitions) {
         this.definitions = definitions;
     }
@@ -32,17 +31,24 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        this.definition = definitions.get(position);
-        holder.searchDeclension.setText(definition.getSearchDeclension().equals("null") ? "" : definition.getSearchDeclension());
-        holder.searchType.setText(definition.getSearchType());
-        holder.searchGender.setText(definition.getSearchGender());
+        Definition definition = definitions.get(position);
 
-        holder.au.setText("NS: " + definition.getSearchMutations().get("root") + ",");
-        holder.gu.setText("GS: " + definition.getSearchMutations().get("genSing") + ",");
-        holder.ai.setText("NP: " + definition.getSearchMutations().get("nomPlu") + ",");
-        holder.gi.setText("GP: " + definition.getSearchMutations().get("genPlu"));
+        holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
+        holder.searchTerm.setText(definition.getDetails().getSearchTerm());
+        holder.gender.setText(definition.getDetails().getGender());
+        holder.declension.setText(definition.getDetails().getDeclension());
+        holder.type.setText(definition.getDetails().getSearchType());
+        holder.signpost.setText(definition.getDetails().getSignpost());
 
-        holder.searchTerm.setText(definition.getMutations().get("root"));
+        String domainResults = "";
+        for(int i=0; i<definition.getDomains().getDomains().size(); i++) {
+            domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
+            domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
+
+            if(!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
+        }
+
+        holder.domains.setText(domainResults);
     }
 
     @Override
@@ -50,29 +56,21 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return definitions.size();
     }
 
-    public void setData(Definition definition) {
-        this.definition = definition;
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView searchTerm, searchType, searchDeclension, searchGender;
-        TextView au, ai, gu, gi;
-        TextView translation;
+        TextView term, searchTerm, gender, declension, type, signpost;
+        TextView mutations, domains;
 
         ViewHolder(View itemView) {
             super(itemView);
 
+            term = (TextView) itemView.findViewById(R.id.term);
             searchTerm = (TextView) itemView.findViewById(R.id.searchTerm);
-            searchType = (TextView) itemView.findViewById(R.id.searchType);
-            searchDeclension = (TextView) itemView.findViewById(R.id.searchDeclension);
-            searchGender = (TextView) itemView.findViewById(R.id.searchGender);
-
-            au = (TextView) itemView.findViewById(R.id.search_au);
-            gu = (TextView) itemView.findViewById(R.id.search_gu);
-            ai = (TextView) itemView.findViewById(R.id.search_ai);
-            gi = (TextView) itemView.findViewById(R.id.search_gi);
-
-            translation = (TextView) itemView.findViewById(R.id.mutation_translation);
+            gender = (TextView) itemView.findViewById(R.id.gender);
+            declension = (TextView) itemView.findViewById(R.id.declension);
+            type = (TextView) itemView.findViewById(R.id.searchType);
+            signpost = (TextView) itemView.findViewById(R.id.signpost);
+            mutations = (TextView) itemView.findViewById(R.id.mutations);
+            domains = (TextView) itemView.findViewById(R.id.domains);
         }
     }
 }

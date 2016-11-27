@@ -1,5 +1,8 @@
 package com.syzible.tearma.Objects;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,79 +11,38 @@ import java.util.HashMap;
  */
 
 public class Definition {
-    private String searchTerm, searchType, searchDeclension, searchGender;
-    private ArrayList<HashMap<String, String>> synonyms, domains, examples;
-    private HashMap<String, String> searchMutations, mutations;
-    private String signpost, gender;
+    private Details details;
+    private Mutations mutations, searchMutations;
+    private Domains domains;
 
-    public Definition(String searchTerm, String searchType, String searchDeclension, String searchGender,
-                      HashMap<String, String> searchMutations, HashMap<String, String> mutations) {
-        this.searchTerm = searchTerm;
-        this.searchType = searchType;
-        this.searchDeclension = searchDeclension;
-        this.searchGender = searchGender;
-        this.searchMutations = searchMutations;
-        this.mutations = mutations;
+    public Definition(JSONObject object) {
+        try {
+            this.details = new Details(object);
+            this.mutations = new Mutations(object.getJSONArray(
+                    Details.MultivariateAttributes.mutations.name()));
+            this.searchMutations = new Mutations(object.getJSONArray(
+                    Details.MultivariateAttributes.searchMutations.name()));
+            this.domains = new Domains(object.getJSONArray(
+                    Details.MultivariateAttributes.domains.name()
+            ));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Definition(String searchTerm, String searchType, String searchDeclension, String searchGender,
-                      HashMap<String, String> searchMutations, ArrayList<HashMap<String, String>> synonyms,
-                      HashMap<String, String> mutations, ArrayList<HashMap<String, String>> domains,
-                      ArrayList<HashMap<String, String>> examples, String signpost, String gender) {
-        this.searchTerm = searchTerm;
-        this.searchType = searchType;
-        this.searchDeclension = searchDeclension;
-        this.searchGender = searchGender;
-        this.searchMutations = searchMutations;
-        this.synonyms = synonyms;
-        this.mutations = mutations;
-        this.domains = domains;
-        this.examples = examples;
-        this.signpost = signpost;
-        this.gender = gender;
+    public Details getDetails() {
+        return details;
     }
 
-    public String getSearchTerm() {
-        return searchTerm;
-    }
-
-    public String getSearchType() {
-        return searchType;
-    }
-
-    public String getSearchDeclension() {
-        return searchDeclension;
-    }
-
-    public String getSearchGender() {
-        return searchGender;
-    }
-
-    public HashMap<String, String> getSearchMutations() {
-        return searchMutations;
-    }
-
-    public ArrayList<HashMap<String, String>> getSynonyms() {
-        return synonyms;
-    }
-
-    public HashMap<String, String> getMutations() {
+    public Mutations getMutations() {
         return mutations;
     }
 
-    public ArrayList<HashMap<String, String>> getDomains() {
+    public Mutations getSearchMutations() {
+        return searchMutations;
+    }
+
+    public Domains getDomains() {
         return domains;
-    }
-
-    public ArrayList<HashMap<String, String>> getExamples() {
-        return examples;
-    }
-
-    public String getSignpost() {
-        return signpost;
-    }
-
-    public String getGender() {
-        return gender;
     }
 }
