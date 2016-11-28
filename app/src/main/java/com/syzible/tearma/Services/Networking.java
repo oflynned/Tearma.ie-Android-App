@@ -37,6 +37,7 @@ public class Networking extends AsyncTask<Object, Object, JSONArray> {
     protected JSONArray doInBackground(Object... params) {
         HttpURLConnection connection;
         try {
+            System.out.println(Parser.getURL(parameters));
             connection = (HttpURLConnection) Parser.getURL(parameters).openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-length", "0");

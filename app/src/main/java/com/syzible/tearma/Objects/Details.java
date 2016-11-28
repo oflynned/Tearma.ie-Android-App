@@ -22,9 +22,11 @@ public class Details {
         try {
             this.searchTerm = object.getString(DefinitionAttributes.searchTerm.name());
             this.searchType = object.getString(DefinitionAttributes.searchType.name());
-            this.gender = object.getString(DefinitionAttributes.gender.name());
+            this.gender = object.has(DefinitionAttributes.gender.name()) ?
+                    object.getString(DefinitionAttributes.gender.name()) : "";
             this.signpost = object.getString(DefinitionAttributes.signpost.name());
-            this.declension = object.getString(DefinitionAttributes.declension.name());
+            this.declension = object.has(DefinitionAttributes.declension.name()) ?
+                    object.getString(DefinitionAttributes.declension.name()) : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }

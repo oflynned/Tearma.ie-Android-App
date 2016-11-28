@@ -38,6 +38,10 @@ public class Parser {
         return new URL(Constants.HOST_URL + url);
     }
 
+    private static Object sanitiseValue(Object input) {
+        return input; //.toString().replace(" ", "+");
+    }
+
     public static void sortMutations(HashMap<String, String> values, JSONArray array) {
         try {
             JSONObject object = array.getJSONObject(0);

@@ -17,12 +17,16 @@ public class Mutations {
 
     private HashMap<String, String> mutations = new HashMap<>();
 
-    public Mutations(JSONArray array) {
+    Mutations(JSONArray array) {
         Parser.sortMutations(mutations, array);
     }
 
     public HashMap<String, String> getMutations() {
         return mutations;
+    }
+
+    public boolean hasMutation(POS pos) {
+        return mutations.containsKey(pos.name());
     }
 
     public String getMutation(POS pos) {

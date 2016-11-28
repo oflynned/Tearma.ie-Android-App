@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onSuccess(JSONArray array) {
         System.out.println(array);
-        if (array.length() > 0) {
+        if (array.length() > 1) {
             lang = Parser.parseLang(array);
             adapter = new Adapter(Parser.parseDefinitions(array));
             recyclerView.setAdapter(adapter);

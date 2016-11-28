@@ -28,7 +28,6 @@
                     android:id="@+id/term"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="term"
                     android:textSize="18sp" />
 
                 <TextView
@@ -36,64 +35,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/term"
-                    android:text="searchTerm"
                     android:textSize="18sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/search_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/search_term_layout">
-
-                <TextView
-                    android:id="@+id/gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="gender" />
-
-                <TextView
-                    android:id="@+id/declension"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_toEndOf="@id/gender"
-                    android:layout_toRightOf="@id/gender"
-                    android:text="declension" />
-
-                <TextView
-                    android:id="@+id/searchType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_toEndOf="@id/declension"
-                    android:layout_toRightOf="@id/declension"
-                    android:text="searchType" />
-
-                <TextView
-                    android:id="@+id/signpost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_toEndOf="@id/searchType"
-                    android:layout_toRightOf="@id/searchType"
-                    android:text="signpost" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/mutation_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/search_details">
+                android:layout_below="@+id/search_term_layout">
 
                 <TextView
                     android:id="@+id/mutations"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AU" />
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/signpost_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mutation_details">
+
+                <TextView
+                    android:id="@+id/signpost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/search_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signpost_area">
+
+                <TextView
+                    android:id="@+id/attributes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </RelativeLayout>
 
 
@@ -101,13 +80,12 @@
                 android:id="@+id/domain_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/mutation_details">
+                android:layout_below="@+id/search_details">
 
                 <TextView
                     android:id="@+id/domains"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Domains" />
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
 
         </RelativeLayout>
