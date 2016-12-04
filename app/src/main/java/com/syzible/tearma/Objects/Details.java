@@ -1,4 +1,4 @@
-package com.syzible.tearma.Objects;
+package com.syzible.tearma.objects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,11 +8,11 @@ import org.json.JSONObject;
  */
 
 public class Details {
-    public enum DefinitionAttributes {
+    private enum DefinitionAttributes {
         searchTerm, searchType, declension, gender, signpost
     }
 
-    public enum MultivariateAttributes {
+    enum MultivariateAttributes {
         searchMutations, mutations, domains
     }
 

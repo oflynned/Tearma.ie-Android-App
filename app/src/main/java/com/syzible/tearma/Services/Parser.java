@@ -1,9 +1,8 @@
-package com.syzible.tearma.Services;
+package com.syzible.tearma.services;
 
-import com.syzible.tearma.Objects.Definition;
-import com.syzible.tearma.Objects.Domain;
-import com.syzible.tearma.Objects.Mutations;
-import com.syzible.tearma.Objects.SearchLang;
+import com.syzible.tearma.objects.Definition;
+import com.syzible.tearma.objects.Domain;
+import com.syzible.tearma.objects.SearchLang;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,33 +12,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ed on 30/10/2016
  */
 
 public class Parser {
-    static URL getURL(Hashtable<String, String> parameters) throws MalformedURLException {
-        Iterator iterator = parameters.entrySet().iterator();
+    static URL getURL(HashMap<String, String> parameters) throws MalformedURLException {
+        Set<?> keys = parameters.keySet();
+        Iterator iterator = keys.iterator();
+
         String url = "";
         int i = 0;
 
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
+            String key = (String) iterator.next();
             url += i == 0 ? "?" : "&";
-            url += pair.getKey() + "=" + pair.getValue();
+            url += key + "=" + parameters.get(key);
             iterator.remove();
             i++;
         }
+        System.out.println(Constants.REMOTE_URL + url);
 
-        return new URL(Constants.HOST_URL + url);
-    }
-
-    private static Object sanitiseValue(Object input) {
-        return input; //.toString().replace(" ", "+");
+        return new URL(Constants.REMOTE_URL + url);
     }
 
     public static void sortMutations(HashMap<String, String> values, JSONArray array) {
@@ -84,13 +81,12 @@ public class Parser {
         return new SearchLang(input);
     }
 
-    public static ArrayList<Definition> parseDefinitions(JSONArray input) {
+    public static ArrayList<Definition> parseDefinitions(JSONArray input, SearchLang lang) {
         ArrayList<Definition> holder = new ArrayList<>();
-        System.out.println(input.length());
         for (int i = 1; i < input.length(); i++) {
             try {
                 JSONObject object = input.getJSONObject(i);
-                holder.add(new Definition(object));
+                holder.add(new Definition(object, lang));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -99,62 +95,13 @@ public class Parser {
         return holder;
     }
 
-    private static String getValue(JSONObject input, String key) {
+    public static String parseWordOfDay(JSONObject object) {
         try {
-            return input.has(key) ? input.getString(key) : "";
+            return object.getString("term");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
-    }
 
-    private static HashMap<String, String> getArrayValue(JSONObject input, String key) {
-        try {
-            if (input.has(key)) {
-                JSONArray array = input.getJSONArray(key);
-                HashMap<String, String> values = new HashMap<>();
-                try {
-                    JSONObject object = array.getJSONObject(0);
-                    for (int i = 0; i < object.names().length(); i++) {
-                        String objKey = String.valueOf(object.names().get(i));
-                        String objValue = object.getString(objKey);
-                        values.put(objKey, objValue);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return values;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static ArrayList<HashMap<String, String>> getArrayValues(JSONObject input, String key) {
-        try {
-            if (input.has(key)) {
-                JSONArray array = input.getJSONArray(key);
-                ArrayList<HashMap<String, String>> valuesSorted = new ArrayList<>();
-                HashMap<String, String> values = new HashMap<>();
-                try {
-                    for (int a = 0; a < array.length(); a++) {
-                        JSONObject object = array.getJSONObject(a);
-                        for (int i = 0; i < object.names().length(); i++) {
-                            String objKey = String.valueOf(object.names().get(i));
-                            String objValue = object.getString(objKey);
-                            values.put(objKey, objValue);
-                        }
-                        valuesSorted.add(values);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return valuesSorted;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return null;
     }
 }

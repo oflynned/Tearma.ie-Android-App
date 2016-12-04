@@ -1,10 +1,7 @@
-package com.syzible.tearma.Objects;
+package com.syzible.tearma.objects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by ed on 30/10/2016
@@ -14,8 +11,9 @@ public class Definition {
     private Details details;
     private Mutations mutations, searchMutations;
     private Domains domains;
+    private SearchLang lang;
 
-    public Definition(JSONObject object) {
+    public Definition(JSONObject object, SearchLang lang) {
         try {
             this.details = new Details(object);
             this.mutations = new Mutations(object.getJSONArray(
@@ -25,6 +23,7 @@ public class Definition {
             this.domains = new Domains(object.getJSONArray(
                     Details.MultivariateAttributes.domains.name()
             ));
+            this.lang = lang;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -44,5 +43,13 @@ public class Definition {
 
     public Domains getDomains() {
         return domains;
+    }
+
+    public SearchLang getLang() {
+        return lang;
+    }
+
+    public String getLangValue() {
+        return lang.getSearchLang();
     }
 }

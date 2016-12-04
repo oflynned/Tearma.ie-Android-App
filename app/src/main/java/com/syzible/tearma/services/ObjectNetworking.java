@@ -3,6 +3,7 @@ package com.syzible.tearma.services;
 import android.os.AsyncTask;
 
 import com.syzible.tearma.interfaces.NetworkActivity;
+import com.syzible.tearma.interfaces.ObjectNetworkActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,19 +15,20 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
  * Created by ed on 30/10/2016
  */
 
-public class Networking extends AsyncTask<Object, Object, JSONArray> {
-    private NetworkActivity networkActivity;
-    private HashMap<String, String> parameters;
+public class ObjectNetworking extends AsyncTask<Object, Object, JSONObject> {
+    private ObjectNetworkActivity networkActivity;
+    private String url;
 
-    public Networking(NetworkActivity networkActivity, HashMap<String, String> parameters) {
+    public ObjectNetworking(ObjectNetworkActivity networkActivity, String url) {
         this.networkActivity = networkActivity;
-        this.parameters = parameters;
+        this.url = url;
     }
 
     @Override
@@ -35,10 +37,10 @@ public class Networking extends AsyncTask<Object, Object, JSONArray> {
     }
 
     @Override
-    protected JSONArray doInBackground(Object... params) {
+    protected JSONObject doInBackground(Object... params) {
         HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) Parser.getURL(parameters).openConnection();
+            connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.setRequestMethod("GET");
@@ -61,7 +63,7 @@ public class Networking extends AsyncTask<Object, Object, JSONArray> {
                         writer.write(buffer, 0, n);
                     }
                     br.close();
-                    return new JSONArray(writer.toString());
+                    return new JSONObject(writer.toString());
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -74,12 +76,12 @@ public class Networking extends AsyncTask<Object, Object, JSONArray> {
     }
 
     @Override
-    protected void onPostExecute(JSONArray jsonArray) {
-        super.onPostExecute(jsonArray);
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
         assert networkActivity != null;
-        System.out.println(jsonArray);
-        if (jsonArray != null)
-            networkActivity.onSuccess(jsonArray);
+        System.out.println(jsonObject);
+        if (!jsonObject.isNull("term"))
+            networkActivity.onSuccess(jsonObject);
         else networkActivity.onFailure();
     }
 }

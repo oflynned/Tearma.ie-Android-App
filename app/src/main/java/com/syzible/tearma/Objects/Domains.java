@@ -1,6 +1,6 @@
-package com.syzible.tearma.Objects;
+package com.syzible.tearma.objects;
 
-import com.syzible.tearma.Services.Parser;
+import com.syzible.tearma.services.Parser;
 
 import org.json.JSONArray;
 

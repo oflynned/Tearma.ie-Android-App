@@ -1,6 +1,6 @@
-package com.syzible.tearma.Objects;
+package com.syzible.tearma.objects;
 
-import com.syzible.tearma.Services.Parser;
+import com.syzible.tearma.services.Parser;
 
 import org.json.JSONObject;
 
@@ -15,10 +15,6 @@ public class Domain {
 
     public Domain(JSONObject object) {
         Parser.sortDomains(attributes, object);
-    }
-
-    public HashMap<String, String> getAttributes() {
-        return attributes;
     }
 
     public String getEnDomain() {

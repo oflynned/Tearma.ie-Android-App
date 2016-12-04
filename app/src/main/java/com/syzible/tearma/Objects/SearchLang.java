@@ -1,4 +1,4 @@
-package com.syzible.tearma.Objects;
+package com.syzible.tearma.objects;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,6 +8,10 @@ import org.json.JSONException;
  */
 
 public class SearchLang {
+    public enum Languages {
+        en, ga
+    }
+
     private String searchLang;
 
     public SearchLang(JSONArray array) {

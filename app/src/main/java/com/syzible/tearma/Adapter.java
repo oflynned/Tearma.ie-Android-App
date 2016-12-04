@@ -1,14 +1,17 @@
 package com.syzible.tearma;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.syzible.tearma.Objects.Definition;
-import com.syzible.tearma.Objects.Details;
-import com.syzible.tearma.Objects.Mutations;
+import com.syzible.tearma.objects.Definition;
+import com.syzible.tearma.objects.Mutations;
+import com.syzible.tearma.objects.SearchLang;
+import com.syzible.tearma.ui.Animate;
 
 import java.util.ArrayList;
 
@@ -16,13 +19,10 @@ import java.util.ArrayList;
  * Created by ed on 30/10/2016
  */
 
-class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private ArrayList<Definition> definitions = new ArrayList<>();
 
-    Adapter() {
-    }
-
-    Adapter(ArrayList<Definition> definitions) {
+    public Adapter(ArrayList<Definition> definitions) {
         this.definitions = definitions;
     }
 
@@ -32,9 +32,99 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Definition definition = definitions.get(position);
+    private void formatEnCard(ViewHolder holder, final Definition definition) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Save definition")
+                        .setMessage("Do you want to save \"" + definition.getMutations().getMutation(Mutations.POS.root) + "\" to a list for use later?")
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
+        holder.searchTerm.setText(definition.getDetails().getSearchTerm());
+
+        String attributes = "";
+        if (!definition.getDetails().getSearchType().equals("-1"))
+            attributes += definition.getDetails().getSearchType();
+
+        if(definition.getDetails().getSearchType().equals("noun")) {
+            if (!definition.getDetails().getDeclension().equals("-1"))
+                attributes += ", declension " + definition.getDetails().getDeclension();
+
+            if (!definition.getDetails().getGender().equals("-1") ||
+                    definition.getDetails().getGender().equals(""))
+                attributes += ", " + definition.getDetails().getGender();
+        }
+
+        holder.attributes.setText(attributes);
+
+        if (!definition.getDetails().getSignpost().equals("-1"))
+            holder.signpost.setText(definition.getDetails().getSignpost());
+
+        String mutations = "";
+        if (definition.getDetails().getSearchType().equals("noun")) {
+            if (definition.getMutations().hasMutation(Mutations.POS.genSing))
+                mutations += "gs: " + definition.getMutations().getMutation(Mutations.POS.genSing) + " ";
+            if (definition.getMutations().hasMutation(Mutations.POS.nomPlu))
+                mutations += "np: " + definition.getMutations().getMutation(Mutations.POS.nomPlu) + " ";
+            if (definition.getMutations().hasMutation(Mutations.POS.genPlu))
+                mutations += "gp: " + definition.getMutations().getMutation(Mutations.POS.genPlu);
+        } else if(definition.getDetails().getSearchType().equals("verb")) {
+            if(definition.getMutations().hasMutation(Mutations.POS.gerund))
+                mutations += "gerund: " + definition.getMutations().getMutation(Mutations.POS.gerund) + " ";
+            if(definition.getMutations().hasMutation(Mutations.POS.participle))
+                mutations += "participle: " + definition.getMutations().getMutation(Mutations.POS.participle);
+        }
+        holder.mutations.setText(mutations);
+
+        String domainResults = "";
+        for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
+            domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
+            domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
+
+            if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
+        }
+
+        holder.domains.setText(domainResults);
+    }
+
+    private void formatGaCard(final ViewHolder holder, final Definition definition) {
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Save definition")
+                        .setMessage("Do you want to save \"" + definition.getMutations().getMutation(Mutations.POS.root) + "\" to a list for use later?")
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+        });*/
 
         holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
         holder.searchTerm.setText(definition.getDetails().getSearchTerm());
@@ -58,17 +148,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         String mutations = "";
         if (definition.getDetails().getSearchType().equals("noun")) {
-            if (definition.getMutations().hasMutation(Mutations.POS.genSing))
-                mutations += "gs: " + definition.getMutations().getMutation(Mutations.POS.genSing);
-            if (definition.getMutations().hasMutation(Mutations.POS.nomPlu))
-                mutations += ", np: " + definition.getMutations().getMutation(Mutations.POS.nomPlu);
-            if (definition.getMutations().hasMutation(Mutations.POS.genPlu))
-                mutations += ", gp: " + definition.getMutations().getMutation(Mutations.POS.genPlu);
+            if (definition.getSearchMutations().hasMutation(Mutations.POS.genSing))
+                mutations += "gs: " + definition.getSearchMutations().getMutation(Mutations.POS.genSing);
+            if (definition.getSearchMutations().hasMutation(Mutations.POS.nomPlu))
+                mutations += ", np: " + definition.getSearchMutations().getMutation(Mutations.POS.nomPlu);
+            if (definition.getSearchMutations().hasMutation(Mutations.POS.genPlu))
+                mutations += ", gp: " + definition.getSearchMutations().getMutation(Mutations.POS.genPlu);
         } else if(definition.getDetails().getSearchType().equals("verb")) {
-            if(definition.getMutations().hasMutation(Mutations.POS.gerund))
-                mutations += "gerund: " + definition.getMutations().getMutation(Mutations.POS.gerund);
-            if(definition.getMutations().hasMutation(Mutations.POS.participle))
-                mutations += ", participle: " + definition.getMutations().getMutation(Mutations.POS.participle);
+            if(definition.getSearchMutations().hasMutation(Mutations.POS.gerund))
+                mutations += "gerund: " + definition.getSearchMutations().getMutation(Mutations.POS.gerund);
+            if(definition.getSearchMutations().hasMutation(Mutations.POS.participle))
+                mutations += ", participle: " + definition.getSearchMutations().getMutation(Mutations.POS.participle);
         }
         holder.mutations.setText(mutations);
 
@@ -81,6 +171,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         }
 
         holder.domains.setText(domainResults);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Definition definition = definitions.get(position);
+
+        if(definition.getLangValue().equals(SearchLang.Languages.en.name())) {
+            formatEnCard(holder, definition);
+        } else if(definition.getLangValue().equals(SearchLang.Languages.ga.name())){
+            formatGaCard(holder, definition);
+        }
     }
 
     @Override
