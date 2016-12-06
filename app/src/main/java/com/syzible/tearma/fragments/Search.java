@@ -1,5 +1,6 @@
 package com.syzible.tearma.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,6 +50,8 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
 
     private HashMap<String, String> parameters = new HashMap<>();
 
+    private ProgressDialog progressDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +71,10 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.lang_switch_fab);
         fab.setOnClickListener(this);
 
+        progressDialog = new ProgressDialog(getContext());
         chosenLang = (TextView) view.findViewById(R.id.chosen_lang);
 
+        showProgress();
         new ObjectNetworking(this, Constants.TOD_URL).execute();
         //search("welcome", SearchLang.Languages.en.name(), 1);
 
@@ -92,6 +97,7 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
     @Override
     public boolean onQueryTextSubmit(String query) {
         try {
+            showProgress();
             String queryParam = URLEncoder.encode(query, "UTF-8");
             String searchLang = isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
             search(queryParam, searchLang);
@@ -115,19 +121,16 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         } else {
             Toast.makeText(getContext(), "No results found!", Toast.LENGTH_SHORT).show();
         }
+        progressDialog.cancel();
     }
 
     @Override
     public void onSuccess(JSONObject object) {
         try {
-            try {
-                String term = object.getString("term");
-                term = URLEncoder.encode(term, "UTF-8");
-                search(term, SearchLang.Languages.ga.name());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (JSONException e) {
+            String term = object.getString("term");
+            term = URLEncoder.encode(term, "UTF-8");
+            search(term, SearchLang.Languages.ga.name());
+        } catch (UnsupportedEncodingException | JSONException e) {
             e.printStackTrace();
         }
     }
@@ -135,13 +138,14 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
     @Override
     public void onFailure() {
         Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+        progressDialog.cancel();
     }
 
     @Override
     public void onClick(View view) {
         isEn = !isEn;
 
-        if(isEn) chosenLang.setText("En");
+        if (isEn) chosenLang.setText("En");
         else chosenLang.setText("Ga");
 
         Toast.makeText(getContext(), isEn ? "English search chosen" : "Irish search chosen",
@@ -158,5 +162,10 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         parameters.put("lang", language);
         parameters.put("limit", String.valueOf(limit));
         new Networking(this, parameters).execute();
+    }
+
+    private void showProgress() {
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
     }
 }

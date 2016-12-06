@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.syzible.tearma.database.Database;
+import com.syzible.tearma.database.DbHelper;
 import com.syzible.tearma.objects.Definition;
 import com.syzible.tearma.objects.Mutations;
 import com.syzible.tearma.objects.SearchLang;
-import com.syzible.tearma.ui.Animate;
 
 import java.util.ArrayList;
 
@@ -32,17 +33,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    private void formatEnCard(ViewHolder holder, final Definition definition) {
+    private void formatEnCard(final ViewHolder holder, final Definition definition) {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle("Save definition")
                         .setMessage("Do you want to save \"" + definition.getMutations().getMutation(Mutations.POS.root) + "\" to a list for use later?")
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                                DbHelper db = new DbHelper(view.getContext());
+                                db.storeDomains(definition, 0);
+                                db.printTable(Database.Domains.TABLE_NAME);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -149,16 +152,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String mutations = "";
         if (definition.getDetails().getSearchType().equals("noun")) {
             if (definition.getSearchMutations().hasMutation(Mutations.POS.genSing))
-                mutations += "gs: " + definition.getSearchMutations().getMutation(Mutations.POS.genSing);
+                mutations += "gs: " + definition.getSearchMutations().getMutation(Mutations.POS.genSing) + " ";
             if (definition.getSearchMutations().hasMutation(Mutations.POS.nomPlu))
-                mutations += ", np: " + definition.getSearchMutations().getMutation(Mutations.POS.nomPlu);
+                mutations += "np: " + definition.getSearchMutations().getMutation(Mutations.POS.nomPlu) + " ";
             if (definition.getSearchMutations().hasMutation(Mutations.POS.genPlu))
-                mutations += ", gp: " + definition.getSearchMutations().getMutation(Mutations.POS.genPlu);
+                mutations += "gp: " + definition.getSearchMutations().getMutation(Mutations.POS.genPlu);
         } else if(definition.getDetails().getSearchType().equals("verb")) {
             if(definition.getSearchMutations().hasMutation(Mutations.POS.gerund))
-                mutations += "gerund: " + definition.getSearchMutations().getMutation(Mutations.POS.gerund);
+                mutations += "gerund: " + definition.getSearchMutations().getMutation(Mutations.POS.gerund) + " ";
             if(definition.getSearchMutations().hasMutation(Mutations.POS.participle))
-                mutations += ", participle: " + definition.getSearchMutations().getMutation(Mutations.POS.participle);
+                mutations += "participle: " + definition.getSearchMutations().getMutation(Mutations.POS.participle);
         }
         holder.mutations.setText(mutations);
 

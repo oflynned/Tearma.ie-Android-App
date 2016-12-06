@@ -11,17 +11,17 @@
             android:icon="@drawable/saved_words"
             android:title="Saved Words" />-->
         <item
-            android:id="@+id/nav_web"
-            android:icon="@drawable/web"
-            android:title="Web" />
+            android:id="@+id/nav_about"
+            android:icon="@drawable/share"
+            android:title="About" />
     </group>
 
     <item android:title="Syzible">
         <menu>
             <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/share"
-                android:title="About" />
+                android:id="@+id/nav_web"
+                android:icon="@drawable/web"
+                android:title="Web" />
             <item
                 android:id="@+id/nav_more"
                 android:icon="@drawable/smartphone"

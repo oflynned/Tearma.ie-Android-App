@@ -13,16 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.syzible.tearma.fragments.About;
 import com.syzible.tearma.fragments.Helper;
 import com.syzible.tearma.fragments.Search;
 import com.syzible.tearma.fragments.WordList;
 import com.syzible.tearma.services.Constants;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener  {
+        NavigationView.OnNavigationItemSelectedListener {
 
     Search search = new Search();
     WordList wordList = new WordList();
+    About about = new About();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -74,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements
                     Uri.parse(Constants.WEB_URL));
             startActivity(webIntent);
         } else if (id == R.id.nav_about) {
-
+            Helper.setFragment(getSupportFragmentManager(), about);
         } else if (id == R.id.nav_more) {
-
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://search?q=pub:Syzible"));
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

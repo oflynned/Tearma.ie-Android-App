@@ -6,45 +6,64 @@ import android.provider.BaseColumns;
  * Created by ed on 29/11/2016
  */
 
-abstract class Database {
-    static final String DB_NAME = "definitions_db";
-    static final int DB_VERSION = 1;
+public abstract class Database {
+    public static final String DB_NAME = "definitions_db";
+    public static final int DB_VERSION = 1;
 
-    static abstract class Definitions implements BaseColumns {
-        static final String TABLE_NAME = "definitions_table";
-        static final String ID = "id";
-        static final String TERM = "term";
-        static final String TYPE = "type";
-        static final String SEARCH_MUTATIONS = "search_mutations";
-        static final String LANGUAGE = "language";
-        static final String SIGNPOST = "signpost";
-        static final String MUTATIONS = "mutations";
-        static final String DOMAINS = "domains";
+    public static abstract class Definitions implements BaseColumns {
+        public static final String TABLE_NAME = "definitions_table";
+        public static final String ID = "id";
+        public static final String SEARCH_TERM = "searchTerm";
+        public static final String SEARCH_TYPE = "searchType";
+        public static final String SEARCH_MUTATIONS_ID = "search_mutations_id";
+        public static final String LANGUAGE = "language";
+        public static final String SIGNPOST = "signpost";
+        public static final String MUTATIONS_ID = "mutations_id";
+        public static final String DOMAINS_ID = "domains_id";
     }
 
-    static abstract class NounMutations implements BaseColumns {
-        static final String TABLE_NAME = "mutations_table";
-        static final String ID = "id";
-        static final String DECLENSION = "declension";
-        static final String GENDER = "gender";
-        static final String ROOT = "root";
-        static final String GEN_SING = "gen_sing";
-        static final String NOM_PLU = "nom_plu";
-        static final String GEN_PLU = "gen_plu";
+    public static abstract class NounMutations implements BaseColumns {
+        public static final String TABLE_NAME = "noun_mutations_table";
+        public static final String ID = "id";
+        public static final String DECLENSION = "declension";
+        public static final String GENDER = "gender";
+        public static final String ROOT = "root";
+        public static final String GEN_SING = "gen_sing";
+        public static final String NOM_PLU = "nom_plu";
+        public static final String GEN_PLU = "gen_plu";
     }
 
-    static abstract class VerbMutations implements BaseColumns {
-        static final String TABLE_NAME = "mutations_table";
-        static final String ID = "id";
-        static final String ROOT = "root";
-        static final String GERUND = "gen_sing";
-        static final String PARTICIPLE = "nom_plu";
+    public static abstract class VerbMutations implements BaseColumns {
+        public static final String TABLE_NAME = "verb_mutations_table";
+        public static final String ID = "id";
+        public static final String ROOT = "root";
+        public static final String GERUND = "gen_sing";
+        public static final String PARTICIPLE = "nom_plu";
     }
 
-    static abstract class Domains implements BaseColumns {
-        static final String TABLE_NAME = "domains_table";
-        static final String ID = "id";
-        static final String LANG = "lang";
-        static final String DOMAIN = "domain";
+    public static abstract class Domains implements BaseColumns {
+        public static final String TABLE_NAME = "domains_table";
+        public static final String ID = "id";
+        public static final String EN_DOMAIN = "en_domain";
+        public static final String GA_DOMAIN = "ga_domain";
+    }
+
+    public static abstract class NounSearchMutations implements BaseColumns {
+        public static final String TABLE_NAME = "noun_search_mutations_table";
+        public static final String ID = "id";
+        public static final String DECLENSION = "declension";
+        public static final String GENDER = "gender";
+        public static final String ROOT = "root";
+        public static final String GEN_SING = "gen_sing";
+        public static final String NOM_PLU = "nom_plu";
+        public static final String GEN_PLU = "gen_plu";
+    }
+
+    public static abstract class VerbSearchMutations implements BaseColumns {
+        public static final String TABLE_NAME = "verb_search_mutations_table";
+        public static final String ID = "id";
+        public static final String ROOT = "root";
+        public static final String GERUND = "gen_sing";
+        public static final String PARTICIPLE = "nom_plu";
     }
 }
