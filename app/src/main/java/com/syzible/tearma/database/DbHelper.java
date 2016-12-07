@@ -110,7 +110,7 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void printTable(String tableName) {
+    public DbHelper printTable(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + tableName, null);
         int rowCount = cursor.getCount();
@@ -129,20 +129,25 @@ public class DbHelper extends SQLiteOpenHelper {
 
         cursor.close();
         db.close();
+
+        return this;
     }
 
-    public void purge(SQLiteDatabase sqLiteDatabase) {
+    public DbHelper purge() {
+        SQLiteDatabase db = this.getReadableDatabase();
         System.out.println("Purging tables");
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Database.Definitions.TABLE_NAME + ";");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Database.Domains.TABLE_NAME + ";");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Database.NounMutations.TABLE_NAME + ";");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Database.VerbMutations.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + Database.Definitions.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + Database.Domains.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + Database.NounMutations.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + Database.VerbMutations.TABLE_NAME + ";");
 
-        onCreate(sqLiteDatabase);
+        onCreate(db);
+
+        return this;
     }
 
-    public void printAllTables() {
+    public DbHelper printAllTables() {
         String tables[] = {
                 Database.Definitions.TABLE_NAME,
                 Database.NounMutations.TABLE_NAME,
@@ -153,9 +158,11 @@ public class DbHelper extends SQLiteOpenHelper {
         for (String table : tables) {
             printTable(table);
         }
+
+        return this;
     }
 
-    public void addDefinition(Definition definition, SearchLang searchLang) {
+    public DbHelper addDefinition(Definition definition, SearchLang searchLang) {
 
         ContentValues cvDefinitions = new ContentValues();
         ContentValues cvNoun = new ContentValues();
@@ -172,33 +179,41 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase write_db = this.getWritableDatabase();
         SQLiteDatabase read_db = this.getReadableDatabase();
 
+        int id = 0;
+
         switch (definition.getDetails().getSearchType()) {
             case "noun":
-                //int def_id = read_db.rawQuery("SELECT * FROM " + Database.Definitions.)
-                //cvNoun.put(Database.NounMutations.ID);
+                storeNoun(definition, id);
                 break;
             case "verb":
+                storeVerb(definition, id);
                 break;
             default:
+                storeOther(definition, id);
                 break;
         }
+
+        storeDomains(definition, id);
+
         read_db.close();
         write_db.close();
+
+        return this;
     }
 
-    private void insertNoun(ContentValues cv, Definition definition, int id) {
-
-    }
-
-    private void insertVerb(ContentValues cv, Definition definition, int id) {
-
-    }
-
-    private void insertOther(ContentValues cv, Definition definition, int id) {
+    private void storeNoun(Definition definition, int id) {
 
     }
 
-    public void storeDomains(Definition definition, int id) {
+    private void storeVerb(Definition definition, int id) {
+
+    }
+
+    private void storeOther(Definition definition, int id) {
+
+    }
+
+    public DbHelper storeDomains(Definition definition, int id) {
         SQLiteDatabase writeDb = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -211,10 +226,12 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         writeDb.close();
+
+        return this;
     }
 
-    public static void removeDefinition(int pos) {
-
+    public DbHelper removeDefinition(int id) {
+        return this;
     }
 
     public static JSONArray getRecords() {

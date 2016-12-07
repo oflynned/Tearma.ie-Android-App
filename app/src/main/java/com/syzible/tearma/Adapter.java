@@ -1,15 +1,11 @@
 package com.syzible.tearma;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.syzible.tearma.database.Database;
-import com.syzible.tearma.database.DbHelper;
 import com.syzible.tearma.objects.Definition;
 import com.syzible.tearma.objects.Mutations;
 import com.syzible.tearma.objects.SearchLang;
@@ -34,7 +30,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     private void formatEnCard(final ViewHolder holder, final Definition definition) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(view.getContext())
@@ -43,9 +39,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                DbHelper db = new DbHelper(view.getContext());
-                                db.storeDomains(definition, 0);
-                                db.printTable(Database.Domains.TABLE_NAME);
+                                new DbHelper(view.getContext())
+                                        .purge()
+                                        .storeDomains(definition, 0)
+                                        .printAllTables();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -56,54 +53,59 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         })
                         .show();
             }
-        });
+        });*/
 
         holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
         holder.searchTerm.setText(definition.getDetails().getSearchTerm());
 
-        String attributes = "";
-        if (!definition.getDetails().getSearchType().equals("-1"))
-            attributes += definition.getDetails().getSearchType();
+        if (!definition.getDetails().getSearchType().equals("-1")) {
+            String attributes = definition.getDetails().getSearchType();
 
-        if(definition.getDetails().getSearchType().equals("noun")) {
-            if (!definition.getDetails().getDeclension().equals("-1"))
-                attributes += ", declension " + definition.getDetails().getDeclension();
+            if (definition.getDetails().getSearchType().equals("noun")) {
+                if (!definition.getDetails().getDeclension().equals("-1"))
+                    attributes += ", declension " + definition.getDetails().getDeclension();
 
-            if (!definition.getDetails().getGender().equals("-1") ||
-                    definition.getDetails().getGender().equals(""))
-                attributes += ", " + definition.getDetails().getGender();
-        }
+                if (!definition.getDetails().getGender().equals("-1") ||
+                        definition.getDetails().getGender().equals(""))
+                    attributes += ", " + definition.getDetails().getGender();
+            }
 
-        holder.attributes.setText(attributes);
+            holder.attributes.setText(attributes);
+        } else holder.attributes.setVisibility(View.GONE);
 
         if (!definition.getDetails().getSignpost().equals("-1"))
             holder.signpost.setText(definition.getDetails().getSignpost());
+        else holder.signpost.setVisibility(View.GONE);
 
-        String mutations = "";
-        if (definition.getDetails().getSearchType().equals("noun")) {
-            if (definition.getMutations().hasMutation(Mutations.POS.genSing))
-                mutations += "gs: " + definition.getMutations().getMutation(Mutations.POS.genSing) + " ";
-            if (definition.getMutations().hasMutation(Mutations.POS.nomPlu))
-                mutations += "np: " + definition.getMutations().getMutation(Mutations.POS.nomPlu) + " ";
-            if (definition.getMutations().hasMutation(Mutations.POS.genPlu))
-                mutations += "gp: " + definition.getMutations().getMutation(Mutations.POS.genPlu);
-        } else if(definition.getDetails().getSearchType().equals("verb")) {
-            if(definition.getMutations().hasMutation(Mutations.POS.gerund))
-                mutations += "gerund: " + definition.getMutations().getMutation(Mutations.POS.gerund) + " ";
-            if(definition.getMutations().hasMutation(Mutations.POS.participle))
-                mutations += "participle: " + definition.getMutations().getMutation(Mutations.POS.participle);
-        }
-        holder.mutations.setText(mutations);
+        if (definition.getMutations().getMutations().size() > 1) {
+            String mutations = "";
+            if (definition.getDetails().getSearchType().equals("noun")) {
+                if (definition.getMutations().hasMutation(Mutations.POS.genSing))
+                    mutations += "gs: " + definition.getMutations().getMutation(Mutations.POS.genSing) + " ";
+                if (definition.getMutations().hasMutation(Mutations.POS.nomPlu))
+                    mutations += "np: " + definition.getMutations().getMutation(Mutations.POS.nomPlu) + " ";
+                if (definition.getMutations().hasMutation(Mutations.POS.genPlu))
+                    mutations += "gp: " + definition.getMutations().getMutation(Mutations.POS.genPlu);
+            } else if (definition.getDetails().getSearchType().equals("verb")) {
+                if (definition.getMutations().hasMutation(Mutations.POS.gerund))
+                    mutations += "gerund: " + definition.getMutations().getMutation(Mutations.POS.gerund) + " ";
+                if (definition.getMutations().hasMutation(Mutations.POS.participle))
+                    mutations += "participle: " + definition.getMutations().getMutation(Mutations.POS.participle);
+            }
+            holder.mutations.setText(mutations);
+        } else holder.mutations.setVisibility(View.GONE);
 
-        String domainResults = "";
-        for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
-            domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
-            domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
+        if (definition.getDomains().getDomains().size() > 0) {
+            String domainResults = "";
+            for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
+                domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
+                domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
 
-            if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
-        }
+                if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
+            }
 
-        holder.domains.setText(domainResults);
+            holder.domains.setText(domainResults);
+        } else holder.domains.setVisibility(View.GONE);
     }
 
     private void formatGaCard(final ViewHolder holder, final Definition definition) {
@@ -132,57 +134,68 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
         holder.searchTerm.setText(definition.getDetails().getSearchTerm());
 
-        String attributes = "";
-        if (!definition.getDetails().getSearchType().equals("-1"))
-            attributes += definition.getDetails().getSearchType();
+        if (!definition.getDetails().getSearchType().equals("-1")) {
+            String attributes = definition.getDetails().getSearchType();
 
-        if(definition.getDetails().getSearchType().equals("noun")) {
-            if (!definition.getDetails().getDeclension().equals("-1"))
-                attributes += ", declension " + definition.getDetails().getDeclension();
+            if (definition.getDetails().getSearchType().equals("noun")) {
+                if (!definition.getDetails().getDeclension().equals("-1"))
+                    attributes += ", declension " + definition.getDetails().getDeclension();
 
-            if (!definition.getDetails().getGender().equals("-1"))
-                attributes += ", " + definition.getDetails().getGender();
-        }
+                if (!definition.getDetails().getGender().equals("-1"))
+                    attributes += ", " + definition.getDetails().getGender();
+            }
 
-        holder.attributes.setText(attributes);
+            holder.attributes.setText(attributes);
+        } else
+            holder.attributes.setVisibility(View.GONE);
 
         if (!definition.getDetails().getSignpost().equals("-1"))
             holder.signpost.setText(definition.getDetails().getSignpost());
+        else
+            holder.signpost.setVisibility(View.GONE);
 
-        String mutations = "";
-        if (definition.getDetails().getSearchType().equals("noun")) {
-            if (definition.getSearchMutations().hasMutation(Mutations.POS.genSing))
-                mutations += "gs: " + definition.getSearchMutations().getMutation(Mutations.POS.genSing) + " ";
-            if (definition.getSearchMutations().hasMutation(Mutations.POS.nomPlu))
-                mutations += "np: " + definition.getSearchMutations().getMutation(Mutations.POS.nomPlu) + " ";
-            if (definition.getSearchMutations().hasMutation(Mutations.POS.genPlu))
-                mutations += "gp: " + definition.getSearchMutations().getMutation(Mutations.POS.genPlu);
-        } else if(definition.getDetails().getSearchType().equals("verb")) {
-            if(definition.getSearchMutations().hasMutation(Mutations.POS.gerund))
-                mutations += "gerund: " + definition.getSearchMutations().getMutation(Mutations.POS.gerund) + " ";
-            if(definition.getSearchMutations().hasMutation(Mutations.POS.participle))
-                mutations += "participle: " + definition.getSearchMutations().getMutation(Mutations.POS.participle);
-        }
-        holder.mutations.setText(mutations);
-
-        String domainResults = "";
-        for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
-            domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
-            domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
-
-            if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
+        if (definition.getSearchMutations().getMutations().size() > 1) {
+            String mutations = "";
+            if (definition.getDetails().getSearchType().equals("noun")) {
+                if (definition.getSearchMutations().hasMutation(Mutations.POS.genSing))
+                    mutations += "gs: " + definition.getSearchMutations().getMutation(Mutations.POS.genSing) + " ";
+                if (definition.getSearchMutations().hasMutation(Mutations.POS.nomPlu))
+                    mutations += "np: " + definition.getSearchMutations().getMutation(Mutations.POS.nomPlu) + " ";
+                if (definition.getSearchMutations().hasMutation(Mutations.POS.genPlu))
+                    mutations += "gp: " + definition.getSearchMutations().getMutation(Mutations.POS.genPlu);
+            } else if (definition.getDetails().getSearchType().equals("verb")) {
+                if (definition.getSearchMutations().hasMutation(Mutations.POS.gerund))
+                    mutations += "gerund: " + definition.getSearchMutations().getMutation(Mutations.POS.gerund) + " ";
+                if (definition.getSearchMutations().hasMutation(Mutations.POS.participle))
+                    mutations += "participle: " + definition.getSearchMutations().getMutation(Mutations.POS.participle);
+            }
+            holder.mutations.setText(mutations);
+        } else {
+            holder.mutations.setVisibility(View.GONE);
         }
 
-        holder.domains.setText(domainResults);
+        if (definition.getDomains().getDomains().size() > 0) {
+            String domainResults = "";
+            for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
+                domainResults += definition.getDomains().getDomains().get(i).getEnDomain() + "\n";
+                domainResults += definition.getDomains().getDomains().get(i).getGaDomain();
+
+                if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults += "\n";
+            }
+            holder.domains.setText(domainResults);
+        } else {
+            holder.domains.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Definition definition = definitions.get(position);
 
-        if(definition.getLangValue().equals(SearchLang.Languages.en.name())) {
+        if (definition.getLangValue().equals(SearchLang.Languages.en.name())) {
             formatEnCard(holder, definition);
-        } else if(definition.getLangValue().equals(SearchLang.Languages.ga.name())){
+        } else if (definition.getLangValue().equals(SearchLang.Languages.ga.name())) {
             formatGaCard(holder, definition);
         }
     }
