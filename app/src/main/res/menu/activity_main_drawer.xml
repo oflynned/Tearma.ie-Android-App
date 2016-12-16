@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/search"
-            android:title="Search" />
+            android:title="@string/search" />
         <!--<item
             android:id="@+id/nav_db"
             android:icon="@drawable/saved_words"
@@ -13,19 +13,19 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/share"
-            android:title="About" />
+            android:title="@string/about" />
     </group>
 
-    <item android:title="Syzible">
+    <item android:title="@string/syzible">
         <menu>
             <item
                 android:id="@+id/nav_web"
                 android:icon="@drawable/web"
-                android:title="Web" />
+                android:title="@string/web" />
             <item
                 android:id="@+id/nav_more"
                 android:icon="@drawable/smartphone"
-                android:title="More" />
+                android:title="@string/more" />
         </menu>
     </item>
 

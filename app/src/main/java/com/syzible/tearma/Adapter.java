@@ -30,31 +30,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     private void formatEnCard(final ViewHolder holder, final Definition definition) {
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Save definition")
-                        .setMessage("Do you want to save \"" + definition.getMutations().getMutation(Mutations.POS.root) + "\" to a list for use later?")
-                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                new DbHelper(view.getContext())
-                                        .purge()
-                                        .storeDomains(definition, 0)
-                                        .printAllTables();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .show();
-            }
-        });*/
-
         holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
         holder.searchTerm.setText(definition.getDetails().getSearchTerm());
 
@@ -109,28 +84,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     private void formatGaCard(final ViewHolder holder, final Definition definition) {
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Save definition")
-                        .setMessage("Do you want to save \"" + definition.getMutations().getMutation(Mutations.POS.root) + "\" to a list for use later?")
-                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .show();
-            }
-        });*/
-
         holder.term.setText(definition.getMutations().getMutation(Mutations.POS.root));
         holder.searchTerm.setText(definition.getDetails().getSearchTerm());
 
@@ -139,10 +92,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             if (definition.getDetails().getSearchType().equals("noun")) {
                 if (!definition.getDetails().getDeclension().equals("-1"))
-                    attributes += ", declension " + definition.getDetails().getDeclension();
+                    attributes += " declension " + definition.getDetails().getDeclension();
 
                 if (!definition.getDetails().getGender().equals("-1"))
-                    attributes += ", " + definition.getDetails().getGender();
+                    attributes += " " + definition.getDetails().getGender();
             }
 
             holder.attributes.setText(attributes);

@@ -79,8 +79,7 @@ public class ObjectNetworking extends AsyncTask<Object, Object, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
         assert networkActivity != null;
-        System.out.println(jsonObject);
-        if (!jsonObject.isNull("term"))
+        if(jsonObject != null)
             networkActivity.onSuccess(jsonObject);
         else networkActivity.onFailure();
     }

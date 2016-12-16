@@ -24,6 +24,6 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:gravity="center"
-        android:text="This app utilises the website Téarma.ie as a data-source to populate searches. The app and website came about as a solution to the awkwardness and the unnecessary amount of time spent on looking up words in a dictionary. This app aims to tackle that, allowing the user to search easily, and get instant, elegant responses in the form of cards." />
+        android:text="@string/about_paragraph" />
 
 </RelativeLayout>

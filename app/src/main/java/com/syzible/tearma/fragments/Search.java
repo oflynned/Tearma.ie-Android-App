@@ -23,10 +23,7 @@ import com.syzible.tearma.R;
 import com.syzible.tearma.interfaces.NetworkActivity;
 import com.syzible.tearma.interfaces.ObjectNetworkActivity;
 import com.syzible.tearma.objects.SearchLang;
-import com.syzible.tearma.services.Constants;
-import com.syzible.tearma.services.Networking;
-import com.syzible.tearma.services.ObjectNetworking;
-import com.syzible.tearma.services.Parser;
+import com.syzible.tearma.services.*;
 import com.syzible.tearma.ui.Icons;
 
 import org.json.JSONArray;
@@ -34,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
@@ -44,12 +42,10 @@ import java.util.HashMap;
 public class Search extends Fragment implements NetworkActivity, SearchView.OnQueryTextListener,
         FloatingActionButton.OnClickListener, ObjectNetworkActivity {
 
+    private boolean isEn = true;
     private RecyclerView recyclerView;
     private TextView chosenLang;
-    private boolean isEn = true;
-
     private HashMap<String, String> parameters = new HashMap<>();
-
     private ProgressDialog progressDialog;
 
     @Override
@@ -74,9 +70,7 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         progressDialog = new ProgressDialog(getContext());
         chosenLang = (TextView) view.findViewById(R.id.chosen_lang);
 
-        showProgress();
-        new ObjectNetworking(this, Constants.TOD_URL).execute();
-        //search("welcome", SearchLang.Languages.en.name(), 1);
+        getTermOfDay();
 
         return view;
     }
@@ -97,8 +91,7 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
     @Override
     public boolean onQueryTextSubmit(String query) {
         try {
-            showProgress();
-            String queryParam = URLEncoder.encode(query, "UTF-8");
+            String queryParam = URLEncoder.encode(query.trim(), "UTF-8");
             String searchLang = isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
             search(queryParam, searchLang);
         } catch (UnsupportedEncodingException e) {
@@ -112,6 +105,10 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         return false;
     }
 
+    /**
+     * Result of the search for a given word returned in JSON array format
+     * @param array array of definitions to be parsed returned
+     */
     @Override
     public void onSuccess(JSONArray array) {
         if (array.length() > 1) {
@@ -124,6 +121,10 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         progressDialog.cancel();
     }
 
+    /**
+     * Result of getting term of the day and now perform a search using it
+     * @param object {term: "term"} retrieved from the server for term of the day
+     */
     @Override
     public void onSuccess(JSONObject object) {
         try {
@@ -135,21 +136,32 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
         }
     }
 
+    /**
+     * Handle failures correctly by cancelling dialogs in progress and notifying the user
+     */
     @Override
     public void onFailure() {
-        Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         progressDialog.cancel();
     }
 
+    /**
+     * Floating action button method for language change
+     * @param view parent view holder
+     */
     @Override
     public void onClick(View view) {
         isEn = !isEn;
+        chosenLang.setText(isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name());
+        Toast.makeText(getContext(), isEn ? getString(R.string.en_search_chosen)
+                : getString(R.string.ga_search_chosen), Toast.LENGTH_SHORT).show();
+    }
 
-        if (isEn) chosenLang.setText("En");
-        else chosenLang.setText("Ga");
-
-        Toast.makeText(getContext(), isEn ? "English search chosen" : "Irish search chosen",
-                Toast.LENGTH_SHORT).show();
+    private void getTermOfDay() {
+        progressDialog.setMessage(getString(R.string.getting_tod));
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+        new ObjectNetworking(this, Constants.TOD_URL).execute();
     }
 
     private void search(String term, String language) {
@@ -157,15 +169,23 @@ public class Search extends Fragment implements NetworkActivity, SearchView.OnQu
     }
 
     private void search(String term, String language, int limit) {
-        parameters.clear();
-        parameters.put("term", term);
-        parameters.put("lang", language);
-        parameters.put("limit", String.valueOf(limit));
-        new Networking(this, parameters).execute();
-    }
+        try {
+            progressDialog.cancel();
+            progressDialog.setMessage(getString(R.string.loading_results_for_term, URLDecoder.decode(term, "UTF-8")));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-    private void showProgress() {
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        if (com.syzible.tearma.services.Helper.hasInternet(getContext())) {
+            parameters.clear();
+            parameters.put("term", term);
+            parameters.put("lang", language);
+            parameters.put("limit", String.valueOf(limit));
+            new Networking(this, parameters).execute();
+        } else {
+            onFailure();
+        }
     }
 }
