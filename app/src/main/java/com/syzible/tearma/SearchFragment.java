@@ -5,13 +5,17 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.syzible.tearma.Deprecated.Adapter;
@@ -30,13 +34,12 @@ import java.util.List;
  */
 
 public class SearchFragment extends Fragment implements
-        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener,
-        SearchResultView {
+        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener, SearchResultView {
 
-    private boolean isEn = true;
+    private View view;
     private RecyclerView recyclerView;
+
     private TextView chosenLang;
-    private HashMap<String, String> parameters = new HashMap<>();
     private ProgressDialog progressDialog;
 
     private SearchPresenter searchPresenter;
@@ -45,20 +48,31 @@ public class SearchFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.search_fragment, container, false);
+        view = inflater.inflate(R.layout.search_fragment, container, false);
+        setHasOptionsMenu(true);
         setupRecyclerView(view);
 
         FloatingActionButton fab = view.findViewById(R.id.lang_switch_fab);
         fab.setOnClickListener(this);
 
-        progressDialog = new ProgressDialog(getActivity());
         chosenLang = view.findViewById(R.id.chosen_lang);
 
         return view;
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onResume() {
+        progressDialog = new ProgressDialog(getActivity());
+
         if (searchPresenter == null)
             searchPresenter = new SearchPresenterImpl();
 
@@ -84,13 +98,8 @@ public class SearchFragment extends Fragment implements
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        /*try {
-            String queryParam = URLEncoder.encode(query.trim(), "UTF-8");
-            String searchLang = isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
-            search(queryParam, searchLang);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
+        System.out.println("Submitted");
+        searchPresenter.searchQuery(query);
         return false;
     }
 
@@ -99,86 +108,9 @@ public class SearchFragment extends Fragment implements
         return false;
     }
 
-    /*
     @Override
-    public void onSuccess(JSONArray array) {
-        if (array.length() > 1) {
-            SearchLang lang = Parser.parseLang(array);
-            RecyclerView.Adapter adapter = new Adapter(Parser.parseDefinitions(array, lang));
-            recyclerView.setAdapter(adapter);
-        } else {
-            Toast.makeText(getActivity(), "No results found!", Toast.LENGTH_SHORT).show();
-        }
-        progressDialog.cancel();
-    }
-
-    @Override
-    public void onSuccess(JSONObject object) {
-        try {
-            String term = object.getString("term");
-            term = URLEncoder.encode(term, "UTF-8");
-            search(term, SearchLang.Languages.ga.name());
-        } catch (UnsupportedEncodingException | JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFailure() {
-        Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-        progressDialog.cancel();
-    }
-
-    @Override
-    public void onClick(View view) {
-        isEn = !isEn;
-        chosenLang.setText(isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name());
-        Toast.makeText(getActivity(), isEn ? getString(R.string.en_search_chosen)
-                : getString(R.string.ga_search_chosen), Toast.LENGTH_SHORT).show();
-    }
-
-    private void getTermOfDay() {
-        progressDialog.setMessage(getString(R.string.getting_tod));
-        progressDialog.show();
-        progressDialog.setCancelable(false);
-        new ObjectNetworking(this, Endpoints.TOD_URL).execute();
-    }
-
-    private void search(String term, String language) {
-        search(term, language, -1);
-    }
-
-    private void search(String term, String language, int limit) {
-        try {
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        parameters.clear();
-        parameters.put("term", term);
-        parameters.put("lang", language);
-        parameters.put("limit", String.valueOf(limit));
-        new Networking(this, parameters).execute();
-    }*/
-
-    @Override
-    public void getTermOfDay() {
-
-    }
-
-    @Override
-    public void submitSearch(String query, SearchLang searchLang) {
-
-    }
-
-    @Override
-    public void clearSearch() {
-
-    }
-
-    @Override
-    public void setLanguageChoice(SearchLang searchLang) {
-
+    public void setLanguageChoice(SearchLang.Languages language) {
+        chosenLang.setText(language.name());
     }
 
     @Override
@@ -209,7 +141,17 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void displayError(String message) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    }
 
+    @Override
+    public TextView getLanguageChoice() {
+        return chosenLang;
+    }
+
+    @Override
+    public void onClick(View v) {
+        searchPresenter.changeLanguage();
     }
 }

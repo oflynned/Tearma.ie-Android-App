@@ -50,6 +50,6 @@ public class Definition {
     }
 
     public String getLangValue() {
-        return lang.getSearchLang();
+        return lang.getSearchLang().name();
     }
 }

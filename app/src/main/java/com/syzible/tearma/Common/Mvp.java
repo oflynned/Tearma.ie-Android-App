@@ -1,16 +1,18 @@
 package com.syzible.tearma.Common;
 
 import android.content.Context;
+import android.view.View;
 
 public interface Mvp {
 
-    interface Presenter<View> {
+    interface IPresenter<View> {
         void attach(View view);
 
         void detach();
     }
 
-    interface View {
+    interface IView {
+        View getView();
         Context getContext();
     }
 }

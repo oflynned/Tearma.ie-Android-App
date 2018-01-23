@@ -5,6 +5,7 @@ import com.syzible.tearma.Common.Endpoints;
 import com.syzible.tearma.Common.RestClient;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -15,7 +16,11 @@ public class SearchInteractorImpl implements SearchInteractor {
         RestClient.get(Endpoints.TOD_URL, new BaseJsonHttpResponseHandler<JSONObject>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, JSONObject response) {
-                onFetchCompleted.onSuccess(response);
+                try {
+                    onFetchCompleted.onSuccess(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -30,13 +35,16 @@ public class SearchInteractorImpl implements SearchInteractor {
         });
     }
 
-    // TODO change to params and move TOD use case to another package
     @Override
     public void fetchResults(String query, final OnFetchCompleted<JSONArray> onFetchCompleted) {
         RestClient.get(Endpoints.SEARCH_URL + query, new BaseJsonHttpResponseHandler<JSONArray>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, JSONArray response) {
-                onFetchCompleted.onSuccess(response);
+                try {
+                    onFetchCompleted.onSuccess(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

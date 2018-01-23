@@ -165,7 +165,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         cvDefinitions.put(Database.Definitions.SEARCH_TERM, definition.getDetails().getSearchTerm());
         cvDefinitions.put(Database.Definitions.SEARCH_TYPE, definition.getDetails().getSearchType());
-        cvDefinitions.put(Database.Definitions.LANGUAGE, searchLang.getSearchLang());
+        cvDefinitions.put(Database.Definitions.LANGUAGE, searchLang.getSearchLang().name());
         cvDefinitions.put(Database.Definitions.SIGNPOST, definition.getDetails().getSignpost());
         db.insert(Database.Definitions.TABLE_NAME, null, cvDefinitions);
         db.close();

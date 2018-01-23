@@ -1,6 +1,7 @@
 package com.syzible.tearma.TermResultDisplay;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface SearchInteractor {
@@ -11,6 +12,6 @@ public interface SearchInteractor {
     interface OnFetchCompleted<T> {
         void onFailure(int statusCode, String message);
 
-        void onSuccess(T results);
+        void onSuccess(T results) throws JSONException;
     }
 }
