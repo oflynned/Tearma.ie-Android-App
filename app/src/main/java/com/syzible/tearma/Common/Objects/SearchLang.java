@@ -1,4 +1,4 @@
-package com.syzible.tearma.Deprecated.Objects;
+package com.syzible.tearma.Common.Objects;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.syzible.tearma.Deprecated;
+package com.syzible.tearma.TermResultDisplay;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,10 +18,10 @@ import java.util.List;
  * Created by ed on 30/10/2016
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.ViewHolder> {
     private List<Definition> definitions = new ArrayList<>();
 
-    public Adapter(List<Definition> definitions) {
+    public DefinitionAdapter(List<Definition> definitions) {
         this.definitions = definitions;
     }
 

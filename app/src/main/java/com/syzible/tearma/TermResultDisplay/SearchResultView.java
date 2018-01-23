@@ -3,8 +3,8 @@ package com.syzible.tearma.TermResultDisplay;
 import android.widget.TextView;
 
 import com.syzible.tearma.Common.Mvp;
-import com.syzible.tearma.Deprecated.Objects.Definition;
-import com.syzible.tearma.Deprecated.Objects.SearchLang;
+import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.SearchLang;
 
 import java.util.List;
 

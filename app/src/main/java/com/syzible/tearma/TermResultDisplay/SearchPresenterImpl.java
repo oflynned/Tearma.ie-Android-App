@@ -3,8 +3,8 @@ package com.syzible.tearma.TermResultDisplay;
 import android.util.Log;
 
 import com.syzible.tearma.Common.Parser;
-import com.syzible.tearma.Deprecated.Objects.Definition;
-import com.syzible.tearma.Deprecated.Objects.SearchLang;
+import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.SearchLang;
 
 import org.json.JSONArray;
 import org.json.JSONException;

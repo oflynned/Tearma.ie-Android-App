@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.syzible.tearma.Deprecated.Objects.Definition;
-import com.syzible.tearma.Deprecated.Objects.Domain;
-import com.syzible.tearma.Deprecated.Objects.SearchLang;
+import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.Domain;
+import com.syzible.tearma.Common.Objects.SearchLang;
 
 import org.json.JSONArray;
 
