@@ -1,8 +1,6 @@
 package com.syzible.tearma.TermResultDisplay;
 
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.util.Xml;
 
 import com.syzible.tearma.Common.Parser;
 import com.syzible.tearma.Deprecated.Objects.Definition;
@@ -14,8 +12,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,38 +34,17 @@ public class SearchPresenterImpl implements SearchPresenter {
     }
 
     @Override
-    public String getSearchUrl(String term) {
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("lang", getLanguage());
-        parameters.put("term", term);
-
-        try {
-            return Parser.getURL(parameters);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return "?term=error&lang=en&limit=-1";
-    }
-
-    @Override
     public void getTermOfTheDay() {
         if (searchResultView != null) {
-            searchResultView.displayProgressBar();
             searchInteractor.fetchResult(new SearchInteractor.OnFetchCompleted<JSONObject>() {
                 @Override
                 public void onFailure(int statusCode, String message) {
                     System.out.println(message);
-                    searchResultView.hideProgressBar();
                 }
 
                 @Override
                 public void onSuccess(JSONObject results) throws JSONException {
                     if (searchResultView != null) {
-                        searchResultView.hideProgressBar();
-
                         String tod = results.getString("term");
                         HashMap<String, String> parameters = getParameters(tod);
                         getDefinitions(parameters);
@@ -79,29 +54,13 @@ public class SearchPresenterImpl implements SearchPresenter {
         }
     }
 
-    private HashMap<String, String> getParameters(String term) {
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("term", term);
-        parameters.put("lang", "ga");
-        parameters.put("limit", "-1");
-
-        return parameters;
-    }
-
     @Override
     public void searchQuery(String term) {
-        System.out.println(term);
         if (searchResultView != null) {
-            searchResultView.displayProgressBar(term);
-
             HashMap<String, String> parameters = new HashMap<>();
-            try {
-                parameters.put("term", URLEncoder.encode(term, "UTF-8"));
-                parameters.put("lang", getLanguage());
-                parameters.put("limit", "-1");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            parameters.put("term", term);
+            parameters.put("lang", getLanguage());
+            parameters.put("limit", "-1");
 
             getDefinitions(parameters);
         }
@@ -126,21 +85,22 @@ public class SearchPresenterImpl implements SearchPresenter {
                 @Override
                 public void onFailure(int statusCode, String message) {
                     Log.e(getClass().getSimpleName(), statusCode + ": " + message);
-                    searchResultView.hideProgressBar();
 
                     if (statusCode == 400)
-                        Snackbar.make(searchResultView.getView(), "Malformed search!", Snackbar.LENGTH_SHORT).show();
+                        searchResultView.displayError("Malformed search!");
 
                     if (statusCode == 500)
-                        Snackbar.make(searchResultView.getView(), "Server error encountered!", Snackbar.LENGTH_SHORT).show();
+                        searchResultView.displayError("Server error encountered!");
                 }
 
                 @Override
                 public void onSuccess(JSONArray results) {
+                    if (results.length() == 1)
+                        searchResultView.displayError("No results found, try switching to " + getOtherLanguage());
+
                     SearchLang searchLang = new SearchLang(results);
                     List<Definition> definitions = Parser.parseDefinitions(results, searchLang);
                     searchResultView.showCards(definitions);
-                    searchResultView.hideProgressBar();
                 }
             });
         }
@@ -154,11 +114,20 @@ public class SearchPresenterImpl implements SearchPresenter {
         }
     }
 
-    private String getParsedTerm(String term) throws UnsupportedEncodingException {
-        return URLEncoder.encode(term.toLowerCase(), "UTF-8");
-    }
-
     private String getLanguage() {
         return isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
+    }
+
+    private HashMap<String, String> getParameters(String term) {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("term", term);
+        parameters.put("lang", "ga");
+        parameters.put("limit", "-1");
+
+        return parameters;
+    }
+
+    private String getOtherLanguage() {
+        return !isEn ? "English" : "Irish";
     }
 }

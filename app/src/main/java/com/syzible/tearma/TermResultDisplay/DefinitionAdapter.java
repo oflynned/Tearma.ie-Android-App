@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.syzible.tearma.Deprecated.Objects.Definition;
-import com.syzible.tearma.Deprecated.Objects.Mutations;
-import com.syzible.tearma.Deprecated.Objects.SearchLang;
+import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.Mutations;
+import com.syzible.tearma.Common.Objects.SearchLang;
 import com.syzible.tearma.R;
 
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         if (definition.getDomains().getDomains().size() > 0) {
             StringBuilder domainResults = new StringBuilder();
             for (int i = 0; i < definition.getDomains().getDomains().size(); i++) {
-                domainResults.append(definition.getDomains().getDomains().get(i).getEnDomain()).append("\n");
+                domainResults.append(definition.getDomains().getDomains().get(i).getEnDomain()).append(" / ");
                 domainResults.append(definition.getDomains().getDomains().get(i).getGaDomain());
 
                 if (!(i == definition.getDomains().getDomains().size() - 1)) domainResults.append("\n");

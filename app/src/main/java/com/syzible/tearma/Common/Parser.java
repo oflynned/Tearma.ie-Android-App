@@ -35,7 +35,7 @@ public class Parser {
             url.append(key).append("=");
 
             String value = parameters.get(key);
-            url.append(key.equals("term") ? URLEncoder.encode(value, "UTF-8"): value);
+            url.append(key.equals("term") ? URLEncoder.encode(value, "UTF-8") : value);
             iterator.remove();
             i++;
         }

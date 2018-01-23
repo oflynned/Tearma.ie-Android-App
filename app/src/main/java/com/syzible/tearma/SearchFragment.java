@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import com.syzible.tearma.TermResultDisplay.SearchPresenter;
 import com.syzible.tearma.TermResultDisplay.SearchPresenterImpl;
 import com.syzible.tearma.TermResultDisplay.SearchResultView;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -120,24 +122,10 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void displayProgressBar() {
-        progressDialog.cancel();
-        progressDialog.setMessage("Fetching term of the day");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
-
-    @Override
     public void displayProgressBar(String term) {
-        progressDialog.cancel();
-        progressDialog.setMessage(getString(R.string.loading_results_for_term, term));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
+        if (getView() != null)
+            Snackbar.make(getView(), getString(R.string.loading_results_for_term, term), Snackbar.LENGTH_LONG).show();
 
-    @Override
-    public void hideProgressBar() {
-        progressDialog.cancel();
     }
 
     @Override

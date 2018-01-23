@@ -14,11 +14,7 @@ public interface SearchResultView extends Mvp.IView {
 
     void showCards(List<Definition> definitions);
 
-    void displayProgressBar();
-
     void displayProgressBar(String message);
-
-    void hideProgressBar();
 
     void displayError(String message);
 
