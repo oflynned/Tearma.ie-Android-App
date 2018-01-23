@@ -97,7 +97,6 @@ public class SearchFragment extends Fragment implements
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        System.out.println("Submitted");
         searchPresenter.searchQuery(query);
         return false;
     }
@@ -122,17 +121,11 @@ public class SearchFragment extends Fragment implements
     public void displayProgressBar(String term) {
         if (getView() != null)
             Snackbar.make(getView(), getString(R.string.loading_results_for_term, term), Snackbar.LENGTH_LONG).show();
-
     }
 
     @Override
     public void displayError(String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public TextView getLanguageChoice() {
-        return chosenLang;
     }
 
     @Override

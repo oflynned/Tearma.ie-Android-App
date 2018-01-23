@@ -17,6 +17,4 @@ public interface SearchResultView extends Mvp.IView {
     void displayProgressBar(String message);
 
     void displayError(String message);
-
-    TextView getLanguageChoice();
 }
