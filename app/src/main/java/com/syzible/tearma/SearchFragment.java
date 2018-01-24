@@ -1,7 +1,6 @@
 package com.syzible.tearma;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,11 +15,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.syzible.tearma.TermResultDisplay.DefinitionAdapter;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
+import com.syzible.tearma.TermResultDisplay.DefinitionAdapter;
 import com.syzible.tearma.TermResultDisplay.DividerDecorator;
 import com.syzible.tearma.TermResultDisplay.SearchPresenter;
 import com.syzible.tearma.TermResultDisplay.SearchPresenterImpl;
@@ -37,9 +38,8 @@ public class SearchFragment extends Fragment implements
 
     private View view;
     private RecyclerView recyclerView;
-
     private TextView chosenLang;
-    private ProgressDialog progressDialog;
+    private Snackbar snackbar;
 
     private SearchPresenter searchPresenter;
 
@@ -70,8 +70,6 @@ public class SearchFragment extends Fragment implements
 
     @Override
     public void onResume() {
-        progressDialog = new ProgressDialog(getActivity());
-
         if (searchPresenter == null)
             searchPresenter = new SearchPresenterImpl();
 
@@ -118,14 +116,21 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void displayProgressBar(String term) {
-        if (getView() != null)
-            Snackbar.make(getView(), getString(R.string.loading_results_for_term, term), Snackbar.LENGTH_LONG).show();
+    public void displayTermSearch(String term) {
+        snackbar = Snackbar.make(view, getString(R.string.loading_results_for_term, term), Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
     }
 
     @Override
-    public void displayError(String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    public void displayMessage(String message, boolean isIndefinite) {
+        snackbar = Snackbar.make(view, message, isIndefinite ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    @Override
+    public void cancelSnackbar() {
+        if (snackbar != null)
+            snackbar.dismiss();
     }
 
     @Override

@@ -2,9 +2,9 @@ package com.syzible.tearma.TermResultDisplay;
 
 import android.util.Log;
 
-import com.syzible.tearma.Common.Parser;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
+import com.syzible.tearma.Common.Parser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +36,7 @@ public class SearchPresenterImpl implements SearchPresenter {
     @Override
     public void getTermOfTheDay() {
         if (searchResultView != null) {
+            searchResultView.displayMessage("Getting term of the day", true);
             searchInteractor.fetchResult(new SearchInteractor.OnFetchCompleted<JSONObject>() {
                 @Override
                 public void onFailure(int statusCode, String message) {
@@ -69,7 +70,7 @@ public class SearchPresenterImpl implements SearchPresenter {
     @Override
     public void getDefinitions(HashMap<String, String> parameters) {
         if (searchResultView != null) {
-            searchResultView.displayProgressBar(parameters.get("term"));
+            searchResultView.displayTermSearch(parameters.get("term"));
 
             String url = null;
 
@@ -86,17 +87,21 @@ public class SearchPresenterImpl implements SearchPresenter {
                 public void onFailure(int statusCode, String message) {
                     Log.e(getClass().getSimpleName(), statusCode + ": " + message);
 
+                    searchResultView.cancelSnackbar();
+
                     if (statusCode == 400)
-                        searchResultView.displayError("Malformed search!");
+                        searchResultView.displayMessage("Malformed search!", false);
 
                     if (statusCode == 500)
-                        searchResultView.displayError("Server error encountered!");
+                        searchResultView.displayMessage("Server error encountered!", false);
                 }
 
                 @Override
                 public void onSuccess(JSONArray results) {
+                    searchResultView.cancelSnackbar();
+
                     if (results.length() == 1)
-                        searchResultView.displayError("No results found, try switching to " + getOtherLanguage());
+                        searchResultView.displayMessage("No results found, try switching to " + getOtherLanguage() + " or searching for another term.", false);
 
                     SearchLang searchLang = new SearchLang(results);
                     List<Definition> definitions = Parser.parseDefinitions(results, searchLang);

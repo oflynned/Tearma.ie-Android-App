@@ -8,6 +8,7 @@ import org.json.JSONObject;
  */
 
 public class Definition {
+    private boolean isFavourite = false;
     private Details details;
     private Mutations mutations, searchMutations;
     private Domains domains;
@@ -27,6 +28,14 @@ public class Definition {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void changeFavourite() {
+        isFavourite = !isFavourite;
     }
 
     public Details getDetails() {

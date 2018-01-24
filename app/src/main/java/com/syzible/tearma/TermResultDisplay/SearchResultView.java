@@ -14,7 +14,9 @@ public interface SearchResultView extends Mvp.IView {
 
     void showCards(List<Definition> definitions);
 
-    void displayProgressBar(String message);
+    void displayTermSearch(String term);
 
-    void displayError(String message);
+    void displayMessage(String message, boolean isIndefinite);
+
+    void cancelSnackbar();
 }

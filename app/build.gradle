@@ -32,4 +32,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.theah64.materialcolors:materialcolors:1.0.0'
+
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
 }
