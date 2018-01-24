@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.syzible.tearma.Common.LanguageUtils;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Mutations;
@@ -126,11 +127,14 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
     }
 
     @Override
-    public void setExamples(Mutations mutations) {
+    public void setExamples(Details details, Mutations mutations) {
         String ns = mutations.getMutation(Mutations.POS.root);
         String np = mutations.getMutation(Mutations.POS.nomPlu);
-        String gs = "méid an " + mutations.getMutation(Mutations.POS.genSing);
-        String gp = "méid na " + mutations.getMutation(Mutations.POS.genPlu);
+
+        String genSingForm = mutations.getMutation(Mutations.POS.genSing);
+        String gs = "méid " + (details.getGender().equals("feminine") ?
+                "na " + genSingForm : "an " + LanguageUtils.lenite(genSingForm, true));
+        String gp = "méid na " + LanguageUtils.eclipse(mutations.getMutation(Mutations.POS.genPlu));
 
         exampleNs.setText(ns);
         exampleNp.setText(np);

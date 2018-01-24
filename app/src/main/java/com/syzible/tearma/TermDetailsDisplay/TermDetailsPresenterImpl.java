@@ -37,7 +37,7 @@ public class TermDetailsPresenterImpl implements TermDetailsPresenter {
                     definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
                             definition.getSearchMutations() : definition.getMutations());
 
-            termDetailsView.setExamples(
+            termDetailsView.setExamples(definition.getDetails(),
                     definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
                             definition.getSearchMutations() : definition.getMutations());
         }

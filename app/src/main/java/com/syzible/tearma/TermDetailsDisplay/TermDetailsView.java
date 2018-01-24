@@ -15,5 +15,5 @@ public interface TermDetailsView extends Mvp.IView {
 
     void setMutations(Mutations mutations);
 
-    void setExamples(Mutations mutations);
+    void setExamples(Details details, Mutations mutations);
 }
