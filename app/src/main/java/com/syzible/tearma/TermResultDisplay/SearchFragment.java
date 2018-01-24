@@ -1,4 +1,4 @@
-package com.syzible.tearma;
+package com.syzible.tearma.TermResultDisplay;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -15,12 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
+import com.syzible.tearma.R;
 import com.syzible.tearma.TermResultDisplay.DefinitionAdapter;
 import com.syzible.tearma.TermResultDisplay.DividerDecorator;
 import com.syzible.tearma.TermResultDisplay.SearchPresenter;
@@ -74,6 +73,7 @@ public class SearchFragment extends Fragment implements
             searchPresenter = new SearchPresenterImpl();
 
         searchPresenter.attach(this);
+        searchPresenter.onStart();
         searchPresenter.getTermOfTheDay();
 
         super.onResume();
@@ -116,8 +116,8 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void displayTermSearch(String term) {
-        snackbar = Snackbar.make(view, getString(R.string.loading_results_for_term, term), Snackbar.LENGTH_INDEFINITE);
+    public void displayTermSearch(String term, String language) {
+        snackbar = Snackbar.make(view, "Getting results for \"" + term + "\" in " + language, Snackbar.LENGTH_INDEFINITE);
         snackbar.show();
     }
 

@@ -1,7 +1,5 @@
 package com.syzible.tearma.TermResultDisplay;
 
-import android.widget.TextView;
-
 import com.syzible.tearma.Common.Mvp;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
@@ -14,7 +12,7 @@ public interface SearchResultView extends Mvp.IView {
 
     void showCards(List<Definition> definitions);
 
-    void displayTermSearch(String term);
+    void displayTermSearch(String term, String language);
 
     void displayMessage(String message, boolean isIndefinite);
 

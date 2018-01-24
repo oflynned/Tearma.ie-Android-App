@@ -19,6 +19,6 @@
     <string name="en_search_chosen">English search chosen</string>
     <string name="ga_search_chosen">Irish search chosen</string>
     <string name="getting_tod">Getting term of the day…</string>
-    <string name="loading_results_for_term">Getting results for %1$s</string>
+    <string name="loading_results_for_term">Getting results for %1$s in %2$s</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>

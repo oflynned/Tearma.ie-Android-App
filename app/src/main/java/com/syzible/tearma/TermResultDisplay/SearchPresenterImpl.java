@@ -28,6 +28,13 @@ public class SearchPresenterImpl implements SearchPresenter {
     }
 
     @Override
+    public void onStart() {
+        if (searchResultView != null) {
+            searchResultView.setLanguageChoice(isEn ? SearchLang.Languages.en : SearchLang.Languages.ga);
+        }
+    }
+
+    @Override
     public void detach() {
         this.searchResultView = null;
         this.searchInteractor = null;
@@ -40,7 +47,8 @@ public class SearchPresenterImpl implements SearchPresenter {
             searchInteractor.fetchResult(new SearchInteractor.OnFetchCompleted<JSONObject>() {
                 @Override
                 public void onFailure(int statusCode, String message) {
-                    System.out.println(message);
+                    searchResultView.cancelSnackbar();
+                    searchResultView.displayMessage("Could not get term of the day (" + statusCode + ")", false);
                 }
 
                 @Override
@@ -60,7 +68,7 @@ public class SearchPresenterImpl implements SearchPresenter {
         if (searchResultView != null) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put("term", term);
-            parameters.put("lang", getLanguage());
+            parameters.put("lang", getSearchLanguage());
             parameters.put("limit", "-1");
 
             getDefinitions(parameters);
@@ -70,7 +78,7 @@ public class SearchPresenterImpl implements SearchPresenter {
     @Override
     public void getDefinitions(HashMap<String, String> parameters) {
         if (searchResultView != null) {
-            searchResultView.displayTermSearch(parameters.get("term"));
+            searchResultView.displayTermSearch(parameters.get("term"), getLanguageChoice());
 
             String url = null;
 
@@ -119,10 +127,6 @@ public class SearchPresenterImpl implements SearchPresenter {
         }
     }
 
-    private String getLanguage() {
-        return isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
-    }
-
     private HashMap<String, String> getParameters(String term) {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("term", term);
@@ -132,7 +136,16 @@ public class SearchPresenterImpl implements SearchPresenter {
         return parameters;
     }
 
+
+    private String getSearchLanguage() {
+        return isEn ? SearchLang.Languages.en.name() : SearchLang.Languages.ga.name();
+    }
+
     private String getOtherLanguage() {
         return !isEn ? "English" : "Irish";
+    }
+
+    private String getLanguageChoice() {
+        return isEn ? "English" : "Irish";
     }
 }

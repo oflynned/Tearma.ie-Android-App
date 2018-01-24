@@ -1,5 +1,7 @@
 package com.syzible.tearma.TermResultDisplay;
 
+import android.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.Mutations;
+import com.syzible.tearma.MainActivity;
 import com.syzible.tearma.R;
+import com.syzible.tearma.TermDetailsDisplay.TermNounDetailsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +70,21 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Definition definition = definitions.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final Definition definition = definitions.get(position);
         formatCard(holder, definition);
         YoYo.with(Techniques.Wobble).duration(1000).delay(500).playOn(holder.itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = ((AppCompatActivity) holder.itemView.getContext()).getFragmentManager();
+
+                TermNounDetailsFragment termDetailsFragment = new TermNounDetailsFragment();
+                termDetailsFragment.setDefinition(definition);
+                MainActivity.setFragmentBackstack(manager, termDetailsFragment);
+            }
+        });
     }
 
     @Override

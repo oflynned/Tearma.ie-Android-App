@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/term_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Target Language Noun Title"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/term_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/term_title"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Origin Language Noun Title"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/term_domains"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/term_subtitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Domains" />
+
+    <include
+        android:id="@+id/noun_mutations"
+        layout="@layout/layout_noun_mutations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/term_subtitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp" />
+
+</RelativeLayout>

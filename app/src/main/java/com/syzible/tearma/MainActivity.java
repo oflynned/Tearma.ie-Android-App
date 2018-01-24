@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.syzible.tearma.TermResultDisplay.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,18 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO return to word of the day cached search
-        new AlertDialog.Builder(this)
-                .setTitle("Close Tearma.ie?")
-                .setMessage("Click okay to close the app.")
-                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        MainActivity.this.finish();
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Close Tearma.ie?")
+                    .setMessage("Click okay to close the app.")
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -64,7 +70,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void setFragment(FragmentManager manager, Fragment fragment) {
-        manager.beginTransaction().replace(R.id.frame_layout, fragment).addToBackStack(null).commit();
+    public static void setFragment(FragmentManager fragmentManager, Fragment fragment) {
+        if (fragmentManager != null)
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
+                    .commit();
+    }
+
+
+    public static void setFragmentBackstack(FragmentManager fragmentManager, Fragment fragment) {
+        if (fragmentManager != null)
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(fragment.getClass().getName())
+                    .commit();
     }
 }

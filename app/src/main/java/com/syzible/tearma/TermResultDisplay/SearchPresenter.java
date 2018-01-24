@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 public interface SearchPresenter extends Mvp.IPresenter<SearchResultView> {
 
+    void onStart();
+
     void getTermOfTheDay();
 
     void searchQuery(String term);
