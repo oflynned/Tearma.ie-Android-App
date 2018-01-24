@@ -28,11 +28,16 @@ public class TermDetailsPresenterImpl implements TermDetailsPresenter {
             termDetailsView.setTitle(getFormattedTitle(title));
             termDetailsView.setSubtitle(getFormattedTitle(subtitle));
             termDetailsView.setDomains(getDomains(definition.getDomains()));
+            termDetailsView.setDetails(definition.getDetails());
 
             System.out.println(definition.getSearchMutations());
             System.out.println(definition.getMutations());
 
             termDetailsView.setMutations(
+                    definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
+                            definition.getSearchMutations() : definition.getMutations());
+
+            termDetailsView.setExamples(
                     definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
                             definition.getSearchMutations() : definition.getMutations());
         }

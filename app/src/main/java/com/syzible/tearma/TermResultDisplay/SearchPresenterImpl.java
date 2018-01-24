@@ -84,9 +84,7 @@ public class SearchPresenterImpl implements SearchPresenter {
 
             try {
                 url = Parser.getURL(parameters);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (MalformedURLException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 

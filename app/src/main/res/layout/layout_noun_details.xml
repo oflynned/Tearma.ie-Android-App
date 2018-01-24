@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginBottom="8dp"
+        android:id="@+id/noun_signpost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signpost" />
+
+    <RelativeLayout
+        android:layout_below="@+id/noun_signpost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/noun_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type" />
+
+        <TextView
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/noun_declension"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/noun_type"
+            android:text="Declension" />
+
+        <TextView
+            android:id="@+id/noun_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/noun_declension"
+            android:text="Gender" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

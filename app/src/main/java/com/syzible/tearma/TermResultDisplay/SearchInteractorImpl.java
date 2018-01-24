@@ -1,8 +1,8 @@
 package com.syzible.tearma.TermResultDisplay;
 
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
-import com.syzible.tearma.Common.Endpoints;
-import com.syzible.tearma.Common.RestClient;
+import com.syzible.tearma.Common.Network.Endpoints;
+import com.syzible.tearma.Common.Network.RestClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;

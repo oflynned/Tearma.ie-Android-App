@@ -26,7 +26,7 @@ import java.util.List;
 public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.ViewHolder> {
     private List<Definition> definitions = new ArrayList<>();
 
-    public DefinitionAdapter(List<Definition> definitions) {
+    DefinitionAdapter(List<Definition> definitions) {
         this.definitions = definitions;
     }
 

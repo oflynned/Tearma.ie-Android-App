@@ -1,4 +1,4 @@
-package com.syzible.tearma.Common;
+package com.syzible.tearma.Common.Network;
 
 /**
  * Created by ed on 30/10/2016

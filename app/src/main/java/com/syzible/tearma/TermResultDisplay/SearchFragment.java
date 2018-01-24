@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +21,6 @@ import android.widget.TextView;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
 import com.syzible.tearma.R;
-import com.syzible.tearma.TermResultDisplay.DefinitionAdapter;
-import com.syzible.tearma.TermResultDisplay.DividerDecorator;
-import com.syzible.tearma.TermResultDisplay.SearchPresenter;
-import com.syzible.tearma.TermResultDisplay.SearchPresenterImpl;
-import com.syzible.tearma.TermResultDisplay.SearchResultView;
 
 import java.util.List;
 
@@ -76,12 +72,14 @@ public class SearchFragment extends Fragment implements
         searchPresenter.onStart();
         searchPresenter.getTermOfTheDay();
 
+        Log.i(getClass().getSimpleName(), "onResume()");
         super.onResume();
     }
 
     @Override
     public void onPause() {
         searchPresenter.detach();
+        Log.i(getClass().getSimpleName(), "onPause()");
         super.onPause();
     }
 

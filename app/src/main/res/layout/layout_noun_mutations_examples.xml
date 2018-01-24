@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feicim " />
+
+        <TextView
+            android:id="@+id/noun_mutation_ns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ns"
+            android:textColor="@color/red_500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ar an tsráid" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feicim " />
+
+        <TextView
+            android:id="@+id/noun_mutation_gs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gs"
+            android:textColor="@color/red_500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ar an tsráid" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feicim " />
+
+        <TextView
+            android:id="@+id/noun_mutation_np"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="np"
+            android:textColor="@color/red_500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ar an tsráid" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feicim " />
+
+        <TextView
+            android:id="@+id/noun_mutation_gp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gp"
+            android:textColor="@color/red_500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ar an tsráid" />
+
+    </LinearLayout>
+
+</LinearLayout>

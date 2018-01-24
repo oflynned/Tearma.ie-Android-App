@@ -1,9 +1,7 @@
 package com.syzible.tearma.TermDetailsDisplay;
 
-import android.widget.TextView;
-
 import com.syzible.tearma.Common.Mvp;
-import com.syzible.tearma.Common.Objects.Domains;
+import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Mutations;
 
 public interface TermDetailsView extends Mvp.IView {
@@ -13,15 +11,9 @@ public interface TermDetailsView extends Mvp.IView {
 
     void setDomains(String... domains);
 
+    void setDetails(Details details);
+
     void setMutations(Mutations mutations);
 
     void setExamples(Mutations mutations);
-
-    TextView getNs();
-
-    TextView getNp();
-
-    TextView getGs();
-
-    TextView getGp();
 }

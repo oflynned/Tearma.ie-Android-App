@@ -1,4 +1,4 @@
-package com.syzible.tearma.Common;
+package com.syzible.tearma.Common.Network;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;

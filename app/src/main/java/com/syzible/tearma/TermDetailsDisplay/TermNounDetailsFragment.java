@@ -3,12 +3,14 @@ package com.syzible.tearma.TermDetailsDisplay;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.R;
 
@@ -19,7 +21,8 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
 
     private TextView title, subtitle, domains;
     private TextView ns, np, gs, gp;
-    private TextView examples;
+    private TextView exampleNs, exampleNp, exampleGs, exampleGp;
+    private TextView signpost, type, declension, gender;
 
     @Nullable
     @Override
@@ -30,10 +33,20 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
         subtitle = view.findViewById(R.id.term_subtitle);
         domains = view.findViewById(R.id.term_domains);
 
+        signpost = view.findViewById(R.id.noun_signpost);
+        type = view.findViewById(R.id.noun_type);
+        declension = view.findViewById(R.id.noun_declension);
+        gender = view.findViewById(R.id.noun_gender);
+
         ns = view.findViewById(R.id.ns_noun_value);
         np = view.findViewById(R.id.np_noun_value);
         gs = view.findViewById(R.id.gs_noun_value);
         gp = view.findViewById(R.id.gp_noun_value);
+
+        exampleNs = view.findViewById(R.id.noun_mutation_ns);
+        exampleNp = view.findViewById(R.id.noun_mutation_np);
+        exampleGs = view.findViewById(R.id.noun_mutation_gs);
+        exampleGp = view.findViewById(R.id.noun_mutation_gp);
 
         return view;
     }
@@ -45,12 +58,14 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
 
         presenter.attach(this);
         presenter.manageDefinition(definition);
+        Log.i(getClass().getSimpleName(), "onResume()");
         super.onResume();
     }
 
     @Override
     public void onPause() {
         presenter.detach();
+        Log.i(getClass().getSimpleName(), "onPause()");
         super.onPause();
     }
 
@@ -82,6 +97,27 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
     }
 
     @Override
+    public void setDetails(Details details) {
+        type.setText(details.getSearchType());
+        gender.setText(details.getGender());
+
+        setSignpost(details.getSignpost());
+        setDeclension(details.getDeclension());
+    }
+
+    private void setSignpost(String signpost) {
+        this.signpost.setText(signpost);
+
+        if (signpost.equals("-1"))
+            this.signpost.setVisibility(View.GONE);
+    }
+
+    private void setDeclension(String declension) {
+        String data = "declension " + declension;
+        this.declension.setText(data);
+    }
+
+    @Override
     public void setMutations(Mutations mutations) {
         ns.setText(mutations.getMutation(Mutations.POS.root));
         np.setText(mutations.getMutation(Mutations.POS.nomPlu));
@@ -91,26 +127,14 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
 
     @Override
     public void setExamples(Mutations mutations) {
+        String ns = mutations.getMutation(Mutations.POS.root);
+        String np = mutations.getMutation(Mutations.POS.nomPlu);
+        String gs = "méid an " + mutations.getMutation(Mutations.POS.genSing);
+        String gp = "méid na " + mutations.getMutation(Mutations.POS.genPlu);
 
-    }
-
-    @Override
-    public TextView getNs() {
-        return ns;
-    }
-
-    @Override
-    public TextView getNp() {
-        return np;
-    }
-
-    @Override
-    public TextView getGs() {
-        return gs;
-    }
-
-    @Override
-    public TextView getGp() {
-        return gp;
+        exampleNs.setText(ns);
+        exampleNp.setText(np);
+        exampleGs.setText(gs);
+        exampleGp.setText(gp);
     }
 }
