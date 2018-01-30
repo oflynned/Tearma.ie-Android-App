@@ -1,4 +1,4 @@
-package com.syzible.tearma.TermResultDisplay;
+package com.syzible.tearma.TermResultDisplay.ResultsView;
 
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +26,7 @@ import java.util.List;
 public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.ViewHolder> {
     private List<Definition> definitions = new ArrayList<>();
 
-    DefinitionAdapter(List<Definition> definitions) {
+    public DefinitionAdapter(List<Definition> definitions) {
         this.definitions = definitions;
     }
 
@@ -82,7 +82,6 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
             @Override
             public void onClick(View v) {
                 FragmentManager manager = ((AppCompatActivity) holder.itemView.getContext()).getFragmentManager();
-
                 TermNounDetailsFragment termDetailsFragment = new TermNounDetailsFragment();
                 termDetailsFragment.setDefinition(definition);
                 MainActivity.setFragmentBackstack(manager, termDetailsFragment);

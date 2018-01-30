@@ -20,6 +20,14 @@ import android.widget.TextView;
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
 import com.syzible.tearma.R;
+import com.syzible.tearma.TermResultDisplay.ResultsView.DefinitionAdapter;
+import com.syzible.tearma.TermResultDisplay.ResultsView.DividerDecorator;
+import com.syzible.tearma.TermResultDisplay.ResultsView.ResultDisplayPresenter;
+import com.syzible.tearma.TermResultDisplay.ResultsView.ResultDisplayPresenterImpl;
+import com.syzible.tearma.TermResultDisplay.ResultsView.ResultDisplayView;
+import com.syzible.tearma.TermResultDisplay.TermSearch.TermSearchPresenter;
+import com.syzible.tearma.TermResultDisplay.TermSearch.TermSearchPresenterImpl;
+import com.syzible.tearma.TermResultDisplay.TermSearch.TermSearchView;
 
 import java.util.List;
 
@@ -27,15 +35,17 @@ import java.util.List;
  * Created by ed on 29/11/2016
  */
 
-public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
-        FloatingActionButton.OnClickListener, SearchResultView {
+public class ResultDisplayFragment extends Fragment implements
+        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener,
+        ResultDisplayView, TermSearchView {
 
     private View view;
     private RecyclerView recyclerView;
     private TextView chosenLang;
     private Snackbar snackbar;
 
-    private SearchPresenter searchPresenter;
+    private ResultDisplayPresenter displayPresenter;
+    private TermSearchPresenter searchPresenter;
 
     @Nullable
     @Override
@@ -64,10 +74,15 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public void onResume() {
-        if (searchPresenter == null)
-            searchPresenter = new SearchPresenterImpl();
+        if (displayPresenter == null)
+            displayPresenter = new ResultDisplayPresenterImpl();
 
+        if (searchPresenter == null)
+            searchPresenter = new TermSearchPresenterImpl();
+
+        displayPresenter.attach(this);
         searchPresenter.attach(this);
+
         searchPresenter.onStart();
         searchPresenter.getTermOfTheDay();
 
@@ -112,13 +127,16 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public void displayTermSearch(String term, String language) {
-        snackbar = Snackbar.make(view, "Getting results for \"" + term + "\" in " + language, Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(view,
+                "Getting results for \"" + term + "\" in " + language,
+                Snackbar.LENGTH_INDEFINITE);
         snackbar.show();
     }
 
     @Override
     public void displayMessage(String message, boolean isIndefinite) {
-        snackbar = Snackbar.make(view, message, isIndefinite ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(view, message,
+                isIndefinite ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 

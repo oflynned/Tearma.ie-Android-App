@@ -1,10 +1,10 @@
-package com.syzible.tearma.TermResultDisplay;
+package com.syzible.tearma.TermResultDisplay.TermSearch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public interface SearchInteractor {
+public interface TermSearchInteractor {
     void fetchResult(OnFetchCompleted<JSONObject> onFetchCompleted);
 
     void fetchResults(String query, OnFetchCompleted<JSONArray> onFetchCompleted);

@@ -1,4 +1,4 @@
-package com.syzible.tearma.TermResultDisplay;
+package com.syzible.tearma.TermResultDisplay.ResultsView;
 
 import android.content.Context;
 import android.content.res.Resources;

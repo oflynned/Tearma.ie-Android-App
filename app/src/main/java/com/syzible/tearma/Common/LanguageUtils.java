@@ -89,10 +89,14 @@ public class LanguageUtils {
         if (input.charAt(1) == 'h')
             return input;
 
-        // extra rules
+        // dental dots rules
+        // TODO check gender of word for an + ts rule
         if (shouldCheckDentalDotsRule)
+            if (input.charAt(0) == 's')
+                return 't' + input;
+
             if (input.charAt(0) == 'd' || input.charAt(0) == 'n' ||
-                    input.charAt(0) == 't' || input.charAt(0) == 'l' || input.charAt(0) == 's')
+                    input.charAt(0) == 't' || input.charAt(0) == 'l')
                 return input;
 
         return getMutation(lenitionRules, input);

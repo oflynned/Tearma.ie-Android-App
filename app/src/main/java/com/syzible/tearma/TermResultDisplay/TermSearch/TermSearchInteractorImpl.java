@@ -1,4 +1,4 @@
-package com.syzible.tearma.TermResultDisplay;
+package com.syzible.tearma.TermResultDisplay.TermSearch;
 
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.syzible.tearma.Common.Network.Endpoints;
@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SearchInteractorImpl implements SearchInteractor {
+public class TermSearchInteractorImpl implements TermSearchInteractor {
     @Override
     public void fetchResult(final OnFetchCompleted<JSONObject> onFetchCompleted) {
         RestClient.get(Endpoints.TOD_URL, new BaseJsonHttpResponseHandler<JSONObject>() {

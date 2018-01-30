@@ -8,11 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.syzible.tearma.TermResultDisplay.SearchFragment;
+import com.syzible.tearma.TermResultDisplay.ResultDisplayFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        setFragment(getFragmentManager(), new SearchFragment());
+        setFragment(getFragmentManager(), new ResultDisplayFragment());
         super.onResume();
     }
 
