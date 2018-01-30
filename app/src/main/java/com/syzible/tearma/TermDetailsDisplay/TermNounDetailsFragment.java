@@ -3,10 +3,10 @@ package com.syzible.tearma.TermDetailsDisplay;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.syzible.tearma.Common.LanguageUtils;
@@ -15,7 +15,8 @@ import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.R;
 
-public class TermNounDetailsFragment extends Fragment implements TermDetailsView {
+public class TermNounDetailsFragment extends Fragment
+        implements TermDetailsView, SearchView.OnQueryTextListener {
 
     private TermDetailsPresenter presenter;
     private Definition definition;
@@ -135,8 +136,29 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
         String gp = "méid na " + LanguageUtils.eclipse(mutations.getMutation(Mutations.POS.genPlu));
 
         exampleNs.setText(ns);
+        if (ns.equals("undefined"))
+            exampleNs.setVisibility(View.GONE);
+
         exampleNp.setText(np);
+        if (np.equals("undefined"))
+            exampleNp.setVisibility(View.GONE);
+
         exampleGs.setText(gs);
+        if (gs.equals("undefined"))
+            exampleGs.setVisibility(View.GONE);
+
         exampleGp.setText(gp);
+        if (gp.equals("undefined"))
+            exampleGp.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }
