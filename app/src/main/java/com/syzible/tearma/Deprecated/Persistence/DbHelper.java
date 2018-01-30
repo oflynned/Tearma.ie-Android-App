@@ -17,6 +17,7 @@ import org.json.JSONArray;
  * Created by ed on 01/12/2016
  */
 
+@Deprecated
 public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {

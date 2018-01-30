@@ -1,6 +1,7 @@
 package com.syzible.tearma.TermDetailsDisplay;
 
 import com.syzible.tearma.Common.Objects.Definition;
+import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Domains;
 import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.Common.Objects.SearchLang;
@@ -24,23 +25,22 @@ public class TermDetailsPresenterImpl implements TermDetailsPresenter {
         if (termDetailsView != null) {
             String title = definition.getMutations().getMutation(Mutations.POS.root);
             String subtitle = definition.getSearchMutations().getMutation(Mutations.POS.root);
+            Mutations mutations = getWordForms(definition);
 
             termDetailsView.setTitle(getFormattedTitle(title));
             termDetailsView.setSubtitle(getFormattedTitle(subtitle));
+
             termDetailsView.setDomains(getDomains(definition.getDomains()));
             termDetailsView.setDetails(definition.getDetails());
 
-            System.out.println(definition.getSearchMutations());
-            System.out.println(definition.getMutations());
-
-            termDetailsView.setMutations(
-                    definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
-                            definition.getSearchMutations() : definition.getMutations());
-
-            termDetailsView.setExamples(definition.getDetails(),
-                    definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
-                            definition.getSearchMutations() : definition.getMutations());
+            termDetailsView.setMutations(mutations);
+            termDetailsView.setExamples(definition.getDetails(), mutations);
         }
+    }
+
+    private Mutations getWordForms(Definition definition) {
+        return definition.getLang().getSearchLang() == SearchLang.Languages.ga ?
+                definition.getSearchMutations() : definition.getMutations();
     }
 
     private static String getFormattedTitle(String content) {

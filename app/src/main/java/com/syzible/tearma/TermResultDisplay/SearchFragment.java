@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,8 +27,8 @@ import java.util.List;
  * Created by ed on 29/11/2016
  */
 
-public class SearchFragment extends Fragment implements
-        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener, SearchResultView {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener,
+        FloatingActionButton.OnClickListener, SearchResultView {
 
     private View view;
     private RecyclerView recyclerView;
@@ -72,14 +71,12 @@ public class SearchFragment extends Fragment implements
         searchPresenter.onStart();
         searchPresenter.getTermOfTheDay();
 
-        Log.i(getClass().getSimpleName(), "onResume()");
         super.onResume();
     }
 
     @Override
     public void onPause() {
         searchPresenter.detach();
-        Log.i(getClass().getSimpleName(), "onPause()");
         super.onPause();
     }
 

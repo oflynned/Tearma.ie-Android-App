@@ -7,6 +7,7 @@ import org.json.JSONObject;
  * Created by ed on 30/10/2016
  */
 
+@Deprecated
 public interface ObjectNetworkActivity {
     void onSuccess(JSONObject object);
     void onFailure();

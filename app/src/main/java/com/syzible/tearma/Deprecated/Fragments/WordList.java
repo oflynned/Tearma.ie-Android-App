@@ -13,6 +13,7 @@ import com.syzible.tearma.R;
  * Created by ed on 29/11/2016
  */
 
+@Deprecated
 public class WordList extends Fragment {
     @Nullable
     @Override

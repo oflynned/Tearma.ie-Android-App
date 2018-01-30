@@ -44,6 +44,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
             public void onClick(View v) {
                 definition.changeFavourite();
                 YoYo.with(Techniques.RubberBand).duration(700).playOn(holder.favourite);
+
                 holder.favourite.setImageResource(definition.isFavourite() ?
                         R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp);
             }
@@ -73,7 +74,9 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Definition definition = definitions.get(position);
         formatCard(holder, definition);
-        YoYo.with(Techniques.Wobble).duration(1000).delay(500).playOn(holder.itemView);
+        YoYo.with(position % 2 == 0 ? Techniques.BounceInLeft : Techniques.BounceInRight)
+                .duration(700)
+                .playOn(holder.itemView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

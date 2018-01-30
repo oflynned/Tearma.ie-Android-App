@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
  * Created by ed on 29/11/2016
  */
 
+@Deprecated
 public abstract class Database {
     public static final String DB_NAME = "definitions_db";
     public static final int DB_VERSION = 1;

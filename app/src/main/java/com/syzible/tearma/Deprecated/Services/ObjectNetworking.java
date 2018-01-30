@@ -21,6 +21,7 @@ import java.util.HashMap;
  * Created by ed on 30/10/2016
  */
 
+@Deprecated
 public class ObjectNetworking extends AsyncTask<Object, Object, JSONObject> {
     private ObjectNetworkActivity networkActivity;
     private String url;

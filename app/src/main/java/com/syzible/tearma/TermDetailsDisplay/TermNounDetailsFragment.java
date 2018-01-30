@@ -59,14 +59,12 @@ public class TermNounDetailsFragment extends Fragment implements TermDetailsView
 
         presenter.attach(this);
         presenter.manageDefinition(definition);
-        Log.i(getClass().getSimpleName(), "onResume()");
         super.onResume();
     }
 
     @Override
     public void onPause() {
         presenter.detach();
-        Log.i(getClass().getSimpleName(), "onPause()");
         super.onPause();
     }
 

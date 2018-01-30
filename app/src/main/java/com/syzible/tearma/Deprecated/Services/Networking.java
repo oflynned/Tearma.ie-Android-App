@@ -21,6 +21,7 @@ import java.util.HashMap;
  * Created by ed on 30/10/2016
  */
 
+@Deprecated
 public class Networking extends AsyncTask<Object, Object, JSONArray> {
     private NetworkActivity networkActivity;
     private HashMap<String, String> parameters;
