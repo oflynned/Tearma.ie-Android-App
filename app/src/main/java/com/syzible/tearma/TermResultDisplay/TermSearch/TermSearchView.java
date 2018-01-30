@@ -1,5 +1,7 @@
 package com.syzible.tearma.TermResultDisplay.TermSearch;
 
+import android.view.MenuItem;
+
 import com.syzible.tearma.Common.Mvp;
 import com.syzible.tearma.Common.Objects.SearchLang;
 
@@ -10,5 +12,5 @@ public interface TermSearchView extends Mvp.IView {
 
     void cancelSnackbar();
 
-    void setLanguageChoice(SearchLang.Languages language);
+    void setLanguageChoice(SearchLang.Languages languages);
 }

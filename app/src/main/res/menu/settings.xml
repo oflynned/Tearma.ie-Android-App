@@ -7,7 +7,12 @@
         android:title="@android:string/search_go"
         android:visible="true"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_change_lang"
+        android:title="en"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/action_about"

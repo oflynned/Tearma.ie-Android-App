@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class TermSearchPresenterImpl implements TermSearchPresenter {
     private boolean isEn = true;
+
     private TermSearchView searchView;
     private TermSearchInteractor searchInteractor;
 
@@ -99,6 +100,11 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
         }
     }
 
+    @Override
+    public SearchLang.Languages getSearchLanguage() {
+        return isEn ? SearchLang.Languages.en : SearchLang.Languages.ga;
+    }
+
     private void retrieveResults(String url) {
         searchInteractor.fetchResults(url, new TermSearchInteractor.OnFetchCompleted<JSONArray>() {
             @Override
@@ -126,10 +132,6 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
             intent.putExtra("data", a.toString());
             searchView.getContext().sendBroadcast(intent);
         }
-    }
-
-    private SearchLang.Languages getSearchLanguage() {
-        return isEn ? SearchLang.Languages.en : SearchLang.Languages.ga;
     }
 
     private HashMap<String, String> getParameters(String term, SearchLang.Languages searchLang) {

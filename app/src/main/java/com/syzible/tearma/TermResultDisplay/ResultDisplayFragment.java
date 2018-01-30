@@ -3,7 +3,6 @@ package com.syzible.tearma.TermResultDisplay;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.syzible.tearma.Common.Objects.Definition;
 import com.syzible.tearma.Common.Objects.SearchLang;
@@ -36,12 +34,11 @@ import java.util.List;
  */
 
 public class ResultDisplayFragment extends Fragment implements
-        SearchView.OnQueryTextListener, FloatingActionButton.OnClickListener,
+        SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener,
         ResultDisplayView, TermSearchView {
 
     private View view;
     private RecyclerView recyclerView;
-    private TextView chosenLang;
     private Snackbar snackbar;
 
     private ResultDisplayPresenter displayPresenter;
@@ -55,16 +52,15 @@ public class ResultDisplayFragment extends Fragment implements
         setHasOptionsMenu(true);
         setupRecyclerView(view);
 
-        FloatingActionButton fab = view.findViewById(R.id.lang_switch_fab);
-        fab.setOnClickListener(this);
-
-        chosenLang = view.findViewById(R.id.chosen_lang);
-
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem changeLanguageItem = menu.findItem(R.id.action_change_lang);
+        changeLanguageItem.setOnMenuItemClickListener(this);
+        changeLanguageItem.setTitle(searchPresenter.getSearchLanguage().name());
+
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
@@ -115,11 +111,6 @@ public class ResultDisplayFragment extends Fragment implements
     }
 
     @Override
-    public void setLanguageChoice(SearchLang.Languages language) {
-        chosenLang.setText(language.name());
-    }
-
-    @Override
     public void showCards(List<Definition> definitions) {
         RecyclerView.Adapter adapter = new DefinitionAdapter(definitions);
         recyclerView.setAdapter(adapter);
@@ -147,7 +138,14 @@ public class ResultDisplayFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void setLanguageChoice(SearchLang.Languages languages) {
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
         searchPresenter.changeLanguage();
+        getActivity().invalidateOptionsMenu();
+        return false;
     }
 }
