@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.syzible.tearma.TermResultDisplay.ResultDisplayFragment;
 
@@ -45,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setVisibility(View.GONE);
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         resultDisplayFragment = new ResultDisplayFragment();
     }
@@ -108,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static void setFragmentBackstack(FragmentManager fragmentManager, Fragment fragment) {
+        fragment.setEnterTransition(new Slide(Gravity.END));
+        fragment.setExitTransition(new Slide(Gravity.START));
+
         if (fragmentManager != null)
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, fragment)

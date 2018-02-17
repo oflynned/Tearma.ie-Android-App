@@ -49,6 +49,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
                         R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp);
             }
         });
+        holder.favourite.setVisibility(View.GONE);
 
         if (!definition.getDetails().getSignpost().equals("-1"))
             holder.signpost.setText(definition.getDetails().getSignpost());

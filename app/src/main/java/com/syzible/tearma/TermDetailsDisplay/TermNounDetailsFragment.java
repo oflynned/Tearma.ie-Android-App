@@ -115,14 +115,22 @@ public class TermNounDetailsFragment extends Fragment
     private void setDeclension(String declension) {
         String data = "declension " + declension;
         this.declension.setText(data);
+
+        if (declension.equals("-1"))
+            this.declension.setVisibility(View.GONE);
     }
 
     @Override
     public void setMutations(Mutations mutations) {
-        ns.setText(mutations.getMutation(Mutations.POS.root));
-        np.setText(mutations.getMutation(Mutations.POS.nomPlu));
-        gs.setText(mutations.getMutation(Mutations.POS.genSing));
-        gp.setText(mutations.getMutation(Mutations.POS.genPlu));
+        String nomSing = mutations.getMutation(Mutations.POS.root);
+        String nomPlu = mutations.getMutation(Mutations.POS.nomPlu);
+        String genSing = mutations.getMutation(Mutations.POS.genSing);
+        String genPlu = mutations.getMutation(Mutations.POS.genPlu);
+
+        ns.setText(nomSing);
+        np.setText(nomPlu.equals("undefined") ? "N/A" : nomPlu);
+        gs.setText(genSing.equals("undefined") ? "N/A" : genSing);
+        gp.setText(genPlu.equals("undefined") ? "N/A" : genPlu);
     }
 
     @Override

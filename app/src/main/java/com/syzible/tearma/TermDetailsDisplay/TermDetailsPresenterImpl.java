@@ -34,7 +34,7 @@ public class TermDetailsPresenterImpl implements TermDetailsPresenter {
             termDetailsView.setDetails(definition.getDetails());
 
             termDetailsView.setMutations(mutations);
-            termDetailsView.setExamples(definition.getDetails(), mutations);
+            // termDetailsView.setExamples(definition.getDetails(), mutations);
         }
     }
 
