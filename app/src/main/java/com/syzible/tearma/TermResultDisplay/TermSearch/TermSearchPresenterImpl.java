@@ -46,6 +46,7 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
             searchInteractor.fetchResult(new TermSearchInteractor.OnFetchCompleted<JSONObject>() {
                 @Override
                 public void onFailure(int statusCode, String message) {
+                    Log.e(getClass().getSimpleName(), statusCode + ": " + message);
                     if (searchView != null) {
                         searchView.cancelSnackbar();
                         searchView.displayMessage("Could not get term of the day (" + statusCode + ")", false);
@@ -54,6 +55,7 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
 
                 @Override
                 public void onSuccess(JSONObject results) throws JSONException {
+                    Log.i(getClass().getSimpleName(), "Fetching term of the day: " + results);
                     if (searchView != null) {
                         searchView.cancelSnackbar();
 
@@ -78,6 +80,7 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
 
     @Override
     public void searchQuery(String term) {
+        Log.i(getClass().getSimpleName(), "Querying for term: " + term);
         HashMap<String, String> parameters = getParameters(term, getSearchLanguage());
         String url = null;
 
@@ -94,6 +97,7 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
 
     @Override
     public void changeLanguage() {
+        Log.i(getClass().getSimpleName(), "English search was set to " + isEn + " and should now be " + !isEn);
         if (searchView != null) {
             isEn = !isEn;
             searchView.setLanguageChoice(isEn ? SearchLang.Languages.en : SearchLang.Languages.ga);
@@ -106,27 +110,33 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
     }
 
     private void retrieveResults(String url) {
+        Log.i(getClass().getSimpleName(), "Notifying interactor to fetch results for query: " + url);
         searchInteractor.fetchResults(url, new TermSearchInteractor.OnFetchCompleted<JSONArray>() {
             @Override
             public void onFailure(int statusCode, String message) {
-                searchView.cancelSnackbar();
                 Log.e(getClass().getSimpleName(), statusCode + ": " + message);
+                if (searchView != null) {
+                    searchView.cancelSnackbar();
+                }
             }
 
             @Override
             public void onSuccess(JSONArray results) {
-                assert searchView != null;
-                searchView.cancelSnackbar();
+                Log.i(getClass().getSimpleName(), "Fetched " + results.length() + " results");
+                if (searchView != null) {
+                    searchView.cancelSnackbar();
 
-                if (results.length() < 2)
-                    searchView.displayMessage("No results found! Try searching for another term or searching in " + getOtherLanguage(), false);
-                else
-                    notifyResultsDisplay(results);
+                    if (results.length() < 2)
+                        searchView.displayMessage("No results found! Try searching for another term or searching in " + getOtherLanguage(), false);
+                    else
+                        notifyResultsDisplay(results);
+                }
             }
         });
     }
 
     private void notifyResultsDisplay(JSONArray a) {
+        Log.i(getClass().getSimpleName(), "Notifying new results to display: " + a);
         if (searchView != null) {
             Intent intent = new Intent(Filters.new_results.name());
             intent.putExtra("data", a.toString());
@@ -138,8 +148,6 @@ public class TermSearchPresenterImpl implements TermSearchPresenter {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("term", term);
         parameters.put("lang", searchLang.name());
-        parameters.put("limit", "-1");
-
         return parameters;
     }
 

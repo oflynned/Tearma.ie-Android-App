@@ -27,6 +27,7 @@ public class ResultDisplayPresenterImpl implements ResultDisplayPresenter {
                 JSONArray data = null;
                 try {
                     data = new JSONArray(intent.getStringExtra("data"));
+                    Log.i(getClass().getSimpleName(), data.length() + " records received");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -57,18 +58,23 @@ public class ResultDisplayPresenterImpl implements ResultDisplayPresenter {
 
     @Override
     public void detach() {
+        Log.i(getClass().getSimpleName(), "Detatching presenter");
         searchResultView.getContext().unregisterReceiver(onResultsReceived);
         searchResultView.getContext().unregisterReceiver(onErrorReceived);
-
-        this.searchResultView = null;
+        searchResultView = null;
     }
 
     @Override
     public void getDefinitions(JSONArray results) {
         if (searchResultView != null) {
             SearchLang searchLang = new SearchLang(results);
-            List<Definition> definitions = Parser.parseDefinitions(results, searchLang);
-            searchResultView.showCards(definitions);
+            try {
+                List<Definition> definitions = Parser.parseDefinitions(results, searchLang);
+                searchResultView.showCards(definitions);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

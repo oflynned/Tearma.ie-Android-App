@@ -85,18 +85,21 @@ public class Parser {
         return new SearchLang(input);
     }
 
-    public static ArrayList<Definition> parseDefinitions(JSONArray input, SearchLang lang) {
-        ArrayList<Definition> holder = new ArrayList<>();
-        for (int i = 1; i < input.length(); i++) {
-            try {
-                JSONObject object = input.getJSONObject(i);
-                holder.add(new Definition(object, lang));
-            } catch (JSONException e) {
-                e.printStackTrace();
+    public static ArrayList<Definition> parseDefinitions(JSONArray input, SearchLang lang) throws JSONException {
+        if (input.length() > 0) {
+            ArrayList<Definition> holder = new ArrayList<>();
+            for (int i = 1; i < input.length(); i++) {
+                try {
+                    JSONObject object = input.getJSONObject(i);
+                    holder.add(new Definition(object, lang));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            return holder;
         }
 
-        return holder;
+        throw new JSONException("Definition doesn't exist");
     }
 
     public static String parseWordOfDay(JSONObject object) {

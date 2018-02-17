@@ -1,5 +1,7 @@
 package com.syzible.tearma.TermResultDisplay.TermSearch;
 
+import android.util.Log;
+
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.syzible.tearma.Common.Network.Endpoints;
 import com.syzible.tearma.Common.Network.RestClient;
@@ -37,10 +39,12 @@ public class TermSearchInteractorImpl implements TermSearchInteractor {
 
     @Override
     public void fetchResults(String query, final OnFetchCompleted<JSONArray> onFetchCompleted) {
+        Log.i(getClass().getSimpleName(), "Fetching results for query: " + query);
         RestClient.get(Endpoints.SEARCH_URL + query, new BaseJsonHttpResponseHandler<JSONArray>() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawJsonResponse, JSONArray response) {
                 try {
+                    Log.i(getClass().getSimpleName(), "Got response: " + response);
                     onFetchCompleted.onSuccess(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -49,11 +53,13 @@ public class TermSearchInteractorImpl implements TermSearchInteractor {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String rawJsonData, JSONArray errorResponse) {
+                Log.e(getClass().getSimpleName(), statusCode + ": " + rawJsonData);
                 onFetchCompleted.onFailure(statusCode, rawJsonData);
             }
 
             @Override
             protected JSONArray parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+                Log.i(getClass().getSimpleName(), "Parsing response: " + rawJsonData);
                 return new JSONArray(rawJsonData);
             }
         });

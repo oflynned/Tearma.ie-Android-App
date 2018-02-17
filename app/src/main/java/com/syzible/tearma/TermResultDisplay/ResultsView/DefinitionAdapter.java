@@ -3,6 +3,7 @@ package com.syzible.tearma.TermResultDisplay.ResultsView;
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Definition definition = definitions.get(position);
         formatCard(holder, definition);
+
         YoYo.with(position % 2 == 0 ? Techniques.BounceInLeft : Techniques.BounceInRight)
                 .duration(700)
                 .playOn(holder.itemView);
