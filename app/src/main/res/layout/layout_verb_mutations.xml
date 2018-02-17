@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/verb_mutation_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/stem_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stem:" />
+
+        <TextView
+            android:id="@+id/vn_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verbal Noun:" />
+
+
+        <TextView
+            android:id="@+id/pp_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Past Participle:" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/verb_mutation_values"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/stem_verb_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S" />
+
+        <TextView
+            android:id="@+id/vn_verb_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VN" />
+
+        <TextView
+            android:id="@+id/pp_verb_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PP" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.syzible.tearma.TermDetailsDisplay;
 
 import com.syzible.tearma.Common.Objects.Definition;
-import com.syzible.tearma.Common.Objects.Details;
 import com.syzible.tearma.Common.Objects.Domains;
 import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.Common.Objects.SearchLang;

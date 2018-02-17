@@ -16,6 +16,7 @@ import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.MainActivity;
 import com.syzible.tearma.R;
 import com.syzible.tearma.TermDetailsDisplay.TermNounDetailsFragment;
+import com.syzible.tearma.TermDetailsDisplay.TermVerbDetailsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +83,17 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TermVerbDetailsFragment termVerbDetailsFragment = new TermVerbDetailsFragment();
+                termVerbDetailsFragment.setDefinition(definition);
+
+                TermNounDetailsFragment termNounDetailsFragment = new TermNounDetailsFragment();
+                termNounDetailsFragment.setDefinition(definition);
+
                 FragmentManager manager = ((AppCompatActivity) holder.itemView.getContext()).getFragmentManager();
-                TermNounDetailsFragment termDetailsFragment = new TermNounDetailsFragment();
-                termDetailsFragment.setDefinition(definition);
-                MainActivity.setFragmentBackstack(manager, termDetailsFragment);
+                if (definition.getDetails().getSearchType().equals("verb"))
+                    MainActivity.setFragmentBackstack(manager, termVerbDetailsFragment);
+                else
+                    MainActivity.setFragmentBackstack(manager, termNounDetailsFragment);
             }
         });
     }
