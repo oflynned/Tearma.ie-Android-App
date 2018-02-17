@@ -36,22 +36,11 @@
         android:text="Domains" />
 
     <include
-        android:id="@+id/verb_details"
-        layout="@layout/layout_verb_details"
+        android:id="@+id/other_details"
+        layout="@layout/layout_other_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/term_domains"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp" />
-
-    <include
-        android:id="@+id/verb_mutations"
-        layout="@layout/layout_verb_mutations"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/verb_details"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp" />

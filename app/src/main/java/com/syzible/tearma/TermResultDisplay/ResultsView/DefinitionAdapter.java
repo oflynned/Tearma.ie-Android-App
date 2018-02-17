@@ -16,6 +16,7 @@ import com.syzible.tearma.Common.Objects.Mutations;
 import com.syzible.tearma.MainActivity;
 import com.syzible.tearma.R;
 import com.syzible.tearma.TermDetailsDisplay.TermNounDetailsFragment;
+import com.syzible.tearma.TermDetailsDisplay.TermOtherDetailsFragment;
 import com.syzible.tearma.TermDetailsDisplay.TermVerbDetailsFragment;
 
 import java.util.ArrayList;
@@ -83,17 +84,26 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TermVerbDetailsFragment termVerbDetailsFragment = new TermVerbDetailsFragment();
-                termVerbDetailsFragment.setDefinition(definition);
-
-                TermNounDetailsFragment termNounDetailsFragment = new TermNounDetailsFragment();
-                termNounDetailsFragment.setDefinition(definition);
-
                 FragmentManager manager = ((AppCompatActivity) holder.itemView.getContext()).getFragmentManager();
-                if (definition.getDetails().getSearchType().equals("verb"))
-                    MainActivity.setFragmentBackstack(manager, termVerbDetailsFragment);
-                else
-                    MainActivity.setFragmentBackstack(manager, termNounDetailsFragment);
+                String type = definition.getDetails().getSearchType();
+
+                switch (type) {
+                    case "verb":
+                        TermVerbDetailsFragment termVerbDetailsFragment = new TermVerbDetailsFragment();
+                        termVerbDetailsFragment.setDefinition(definition);
+                        MainActivity.setFragmentBackstack(manager, termVerbDetailsFragment);
+                        break;
+                    case "noun":
+                        TermNounDetailsFragment termNounDetailsFragment = new TermNounDetailsFragment();
+                        termNounDetailsFragment.setDefinition(definition);
+                        MainActivity.setFragmentBackstack(manager, termNounDetailsFragment);
+                        break;
+                    default:
+                        TermOtherDetailsFragment termOtherDetailsFragment = new TermOtherDetailsFragment();
+                        termOtherDetailsFragment.setDefinition(definition);
+                        MainActivity.setFragmentBackstack(manager, termOtherDetailsFragment);
+                        break;
+                }
             }
         });
     }

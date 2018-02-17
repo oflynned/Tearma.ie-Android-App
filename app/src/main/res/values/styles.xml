@@ -9,6 +9,13 @@
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="AboutAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryDark">@color/red_700</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:navigationBarColor">@color/red_700</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -31,9 +31,7 @@ public class TermDetailsPresenterImpl implements TermDetailsPresenter {
 
             termDetailsView.setDomains(getDomains(definition.getDomains()));
             termDetailsView.setDetails(definition.getDetails());
-
             termDetailsView.setMutations(mutations);
-            // termDetailsView.setExamples(definition.getDetails(), mutations);
         }
     }
 

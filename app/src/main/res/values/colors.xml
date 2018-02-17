@@ -3,4 +3,7 @@
     <color name="colorPrimary">@color/indigo_500</color>
     <color name="colorPrimaryDark">@color/indigo_700</color>
     <color name="colorAccent">@color/amber_500</color>
+
+
+    <color name="colorRed">#FF5252</color>
 </resources>
